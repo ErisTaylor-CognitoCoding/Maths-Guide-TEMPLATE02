@@ -1,0 +1,257 @@
+You are building a "Cognito Coding – Revision Guide" interactive web app.
+
+========================
+📛 APP NAMING CONVENTION
+========================
+Name the app: [Subject] Guide [Spec Reference] [Topic]
+Example: "Biology Guide 4.2.2.1 The Human Digestive System"
+
+========================
+🎯 PURPOSE
+========================
+Turn LEARNING OBJECTIVES + TOPIC CONTENT into a step-by-step interactive revision guide that teaches the student key concepts with embedded knowledge checks and questions throughout.
+
+This is not just notes. It is a scaffolded learning experience with built-in retrieval practice.
+
+========================
+🎨 BRANDING (MANDATORY)
+========================
+Use these theme tokens everywhere:
+
+--primary: hsl(25, 100%, 50%)
+--primary-foreground: hsl(0, 0%, 100%)
+--background: hsl(30, 30%, 96%)
+--foreground: hsl(20, 15%, 20%)
+--border: hsl(30, 20%, 88%)
+--success: hsl(142, 71%, 45%)
+
+Rules:
+• NO black borders
+• App background = warm off-white
+• Cards = white, soft border, soft shadow
+• Active elements = orange
+• Sticky footer = orange bar with white text: "Powered by Cognito Coding"
+
+========================
+🔤 TYPOGRAPHY
+========================
+Fonts:
+• Body & UI: Inter, fallback Open Sans, sans-serif
+• Headings / Display: existing display font (e.g. Space Grotesk or similar) – do not change it
+
+Scale:
+• H1: 3rem, 700
+• H2: 2rem, 600
+• H3: 1.5rem, 600
+• Body: 1rem, 400
+• Small: 0.875rem, 400
+
+Brand text utilities:
+• .brand-orange { color: hsl(25, 100%, 50%); }
+• .gradient-title – orange-only gradient for key headings
+
+========================
+🧩 LAYOUT (EXACT STRUCTURE)
+========================
+DESKTOP = Two-column split layout (side by side)
+
+┌─────────────────────────────────────────────────────────────┐
+│  LEFT PANEL (42%)          │  RIGHT PANEL (58%)            │
+│  Scrollable                │  Scrollable                   │
+│  overflow-y: auto          │                               │
+├─────────────────────────────┼───────────────────────────────┤
+│  HEADER:                    │  HEADER (sticky):             │
+│  "REVISION NOTES (MAPPED)"  │  "Cognito Coding – Revision   │
+│  + Subject badge (orange)   │   Guide"                      │
+│                             │  + "Step X of Y" counter      │
+│  Topic title (H2)           │  + "Complete each step..."    │
+│  Subtitle (1 line max)      │                               │
+├─────────────────────────────┤  Breadcrumb: Subject • Topic  │
+│  LEARNING OBJECTIVES        │                               │
+│  Compact list (small text)  ├───────────────────────────────┤
+│  ✓ Objective 1              │  STEP CARDS (vertical stack)  │
+│  ○ Objective 2              │                               │
+│  ○ Objective 3              │  Each card shows:             │
+│  (3-5 items typical)        │  • LO reference (small caps)  │
+│                             │  • "Active" or "Locked" badge │
+├─────────────────────────────┤  • Concept title (H3)         │
+│  VISUAL DIAGRAM CARD        │  • Explanation paragraph      │
+│  Takes remaining space      │  • ANALOGY box (indented)     │
+│  "Diagram updates by step"  │  • WORKED EXAMPLE box         │
+│                             │  • Orange "Continue >" button │
+│  Animated SVG diagram       │                               │
+│  (sized to fit, not scroll) │  Locked cards = greyed out    │
+│  Orange accent highlights   │  with "Locked" badge          │
+│                             │                               │
+├─────────────────────────────┼───────────────────────────────┤
+│  QUICK NOTES (collapsible)  │  FOOTER (sticky):             │
+│  Compact - 2-3 lines max    │  Orange bar                   │
+│  Key formula or fact        │  "Powered by Cognito Coding"  │
+└─────────────────────────────┴───────────────────────────────┘
+
+LEFT PANEL SIZING RULES:
+• Use height: 100vh (minus header/footer)
+• Use overflow-y: auto (scrollbar when needed)
+• Learning objectives = compact, small font
+• Diagram card = flex-grow to fill remaining space
+• Quick Notes = collapsible, always at bottom
+
+MOBILE = Stacked layout (diagram and objectives collapse to accordions)
+
+========================
+📚 PEDAGOGICAL FLOW (FIXED ORDER)
+========================
+For EACH learning objective, steps MUST follow this progression:
+
+1) CONCEPT INTRODUCTION
+   • Learning objective reference at top (small caps, grey)
+   • Clear H3 concept title
+   • 1-2 paragraph explanation
+   • ANALOGY box: Real-world comparison (indented, subtle background)
+   • WORKED EXAMPLE IDEA box: Concrete example with bullet points
+   • Orange "Continue >" button
+
+2) KNOWLEDGE CHECK (MCQ)
+   • 1–2 quick multiple choice questions
+   • Purpose: check understanding
+   • Immediate feedback + explanation
+   • Green success state when correct
+
+3) KEY TERMINOLOGY (DROPDOWN CLOZE)
+   • 1–2 short fill-in sentences to secure key terms
+   • Each blank = DROPDOWN SELECT with 3-4 word options
+   • One correct answer + 2-3 plausible distractors
+   • Immediate feedback on selection
+
+4) SUMMARY PARAGRAPH (DROPDOWN CLOZE)
+   • A single paragraph containing ALL key points for this objective
+   • Each blank = DROPDOWN SELECT (not typed input)
+   • Provide 3-4 word choices per blank (1 correct + 2-3 distractors)
+   • When completed, the paragraph reads as a complete summary
+   • Each dropdown validated independently
+   • Green highlight when correct, orange when incorrect
+
+5) PRACTICE QUESTION
+   • Student answers a question in their own words
+   • Rubric marking using:
+     mustHaveKeywords[] (maps to learning objective points)
+     optionalKeywords[]
+   • Status: Missing / Almost / Complete
+   • Feedback = ONE hint about missing concept
+   • After 2 attempts → show scaffold bullet prompts
+   • Only after "Complete":
+       unlock next section
+       allow reveal of model answer
+
+========================
+🧠 INTERACTION RULES
+========================
+Correct answer →
+• Green success state
+• Short explanation
+• Update diagram with new info (highlight relevant parts)
+• Unlock next step
+
+Wrong answer →
+• One hint only
+• No answer reveal
+
+Continue button disabled until step complete.
+Cards remain "Locked" until previous steps complete.
+
+========================
+📈 PROGRESS UI
+========================
+• "Step X of Y" in top right header
+• Learning objectives list shows checkmarks for completed objectives
+• Active card has orange left border/glow
+• Locked cards greyed out with "Locked" badge
+• Progress persists during session
+
+========================
+🖼 VISUAL SYSTEM
+========================
+Left panel diagram card:
+• Title describing the visual
+• "Diagram updates by step" label
+• Animated SVG that highlights/reveals based on progress
+• MUST FIT within available space (no scroll)
+
+Use animated SVG appropriate for subject:
+Maths → shapes, graphs, equations, tree diagrams
+Physics → forces, circuits, waves, ray diagrams
+Chemistry → particles, reactions, structures
+Biology → cells, systems, processes
+
+========================
+✏️ WHITEBOARD
+========================
+Floating pencil button (bottom right) opens persistent sketchpad:
+• Pen (inc. orange), eraser, clear
+
+========================
+📝 QUICK NOTES
+========================
+Bottom of left panel:
+• Collapsible "QUICK NOTES" section
+• Compact - just 2-3 key formulas or facts
+• Always visible but takes minimal space
+
+========================
+📦 OUTPUT REQUIREMENTS
+========================
+You must generate:
+
+1) Exact two-column layout with LEFT PANEL FIXED (no scroll)
+2) Learning objectives list - compact, fits in view
+3) Animated diagram - sized to fit remaining space
+4) Step cards following the exact structure (LO ref, badge, concept, analogy, example, button)
+5) Quick Notes section - collapsible, compact
+6) React + Tailwind + Framer Motion implementation
+7) All pedagogical steps in correct order
+
+========================
+🔍 CHECK BEFORE OUTPUT
+========================
+✔ App named correctly: [Subject] Guide [Spec Reference] [Topic]
+✔ Two-column layout (height: 100vh, overflow-y: auto for both panels)
+✔ Left panel scrolls when content overflows
+✔ Learning objectives list is compact
+✔ Diagram sized to fit (not overflow)
+✔ Step cards show LO reference + Active/Locked badge
+✔ Each concept has Analogy and Worked Example boxes
+✔ Orange Continue button on each step
+✔ Quick Notes section compact and collapsible
+✔ Typography correct (Inter body, display headings, proper scale)
+✔ Branding correct (no black borders)
+✔ Sticky orange footer with tip text
+
+========================
+INPUT DATA
+========================
+Subject: Maths
+
+Topic: 1.2 - Standard form calculations
+
+Learning Objectives:
+Students should multiply and divide numbers in standard form by applying index laws (Math 1.2)
+Students should add and subtract numbers in standard form by first ensuring the powers of 10 are the same (Math 1.2)
+Students should convert between ordinary numbers and standard form, and use calculators effectively to check answers involving very large or very small numbers (Math 1.2)
+
+Content to Cover:
+	
+• Standard form (scientific notation)
+
+A way of writing very large or very small numbers in the format a × 10ⁿ, where 1 ≤ a < 10 and n is an integer. For example, 3,500,000 = 3.5 × 10⁶
+
+• Index laws for multiplication and division
+
+When multiplying powers of 10, add the indices: 10ᵐ × 10ⁿ = 10⁽ᵐ⁺ⁿ⁾. When dividing, subtract the indices: 10ᵐ ÷ 10ⁿ = 10⁽ᵐ⁻ⁿ⁾
+
+• Adding and subtracting in standard form
+
+To add or subtract numbers in standard form, the powers of 10 must be the same. If they differ, convert one number so both have matching powers before combining the coefficients
+
+• Converting to and from standard form
+
+Moving the decimal point right increases the power of 10 (for large numbers), while moving it left decreases the power (for small numbers). Each place moved changes the power by 1
