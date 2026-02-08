@@ -1642,43 +1642,45 @@ export default function MathsGuideStandardForm() {
           </div>
 
           <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4" data-testid="left-scroll">
-            <div className="rounded-2xl border border-border bg-white p-4" data-testid="card-learning-objectives">
-              <div className="mb-2 text-xs font-semibold tracking-[0.18em] text-muted-foreground" data-testid="text-lo-title">
-                LEARNING OBJECTIVES
-              </div>
-              <div className="grid gap-2" id="learning-objectives">
-                {learningObjectives.map((lo, idx) => {
-                  const done = objectiveCompletion.find((x) => x.loId === lo.id)?.done;
-                  return (
-                    <div
-                      key={lo.id}
-                      className="flex items-start gap-2"
-                      data-testid={`row-learning-objective-${idx}`}
-                    >
+            {diagramStage === 0 ? (
+              <div className="rounded-2xl border border-border bg-white p-4" data-testid="card-learning-objectives">
+                <div className="mb-2 text-xs font-semibold tracking-[0.18em] text-muted-foreground" data-testid="text-lo-title">
+                  LEARNING OBJECTIVES
+                </div>
+                <div className="grid gap-2" id="learning-objectives">
+                  {learningObjectives.map((lo, idx) => {
+                    const done = objectiveCompletion.find((x) => x.loId === lo.id)?.done;
+                    return (
                       <div
-                        className={cn(
-                          "mt-0.5 flex h-4 w-4 items-center justify-center rounded-full border",
-                          done ? "border-[hsl(142_71%_45%)] bg-[hsl(142_71%_45%)]" : "border-border bg-white",
-                        )}
-                        data-testid={`icon-lo-status-${idx}`}
+                        key={lo.id}
+                        className="flex items-start gap-2"
+                        data-testid={`row-learning-objective-${idx}`}
                       >
-                        {done ? <CheckCircle2 className="h-3 w-3 text-white" /> : null}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-[12px] leading-5 text-foreground" data-testid={`text-lo-${idx}`}>
-                          {lo.label}
+                        <div
+                          className={cn(
+                            "mt-0.5 flex h-4 w-4 items-center justify-center rounded-full border",
+                            done ? "border-[hsl(142_71%_45%)] bg-[hsl(142_71%_45%)]" : "border-border bg-white",
+                          )}
+                          data-testid={`icon-lo-status-${idx}`}
+                        >
+                          {done ? <CheckCircle2 className="h-3 w-3 text-white" /> : null}
                         </div>
-                        <div className="text-[11px] tracking-[0.14em] text-muted-foreground" data-testid={`text-lo-ref-${idx}`}>
-                          {lo.shortRef.toUpperCase()}
+                        <div className="min-w-0">
+                          <div className="text-[12px] leading-5 text-foreground" data-testid={`text-lo-${idx}`}>
+                            {lo.label}
+                          </div>
+                          <div className="text-[11px] tracking-[0.14em] text-muted-foreground" data-testid={`text-lo-ref-${idx}`}>
+                            {lo.shortRef.toUpperCase()}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            ) : null}
 
-            <div className="mt-4 flex min-h-0 flex-1 flex-col" data-testid="left-diagram-wrap">
+            <div className={cn("mt-4 flex min-h-0 flex-1 flex-col", diagramStage > 0 ? "h-full" : "")} data-testid="left-diagram-wrap">
               <Diagram stage={diagramStage} />
             </div>
 
