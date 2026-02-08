@@ -763,13 +763,6 @@ function Diagram({
             Diagram updates by step
           </div>
         </div>
-        <Badge
-          variant="secondary"
-          className="border border-border bg-secondary text-foreground"
-          data-testid="badge-diagram-stage"
-        >
-          Stage {clamp(stage, 0, 999)}
-        </Badge>
       </div>
 
       <div className="cognito-card cognito-noise h-[calc(100%-44px)] rounded-2xl p-4">
@@ -1680,9 +1673,11 @@ export default function MathsGuideStandardForm() {
               </div>
             ) : null}
 
-            <div className={cn("mt-4 flex min-h-0 flex-1 flex-col", diagramStage > 0 ? "h-full" : "")} data-testid="left-diagram-wrap">
-              <Diagram stage={diagramStage} />
-            </div>
+            {diagramStage > 0 ? (
+              <div className="flex min-h-0 flex-1 flex-col" data-testid="left-diagram-wrap">
+                <Diagram stage={diagramStage} />
+              </div>
+            ) : null}
 
             <div className="mt-4" data-testid="left-quick-notes">
               <Collapsible open={quickNotesOpen} onOpenChange={setQuickNotesOpen}>
