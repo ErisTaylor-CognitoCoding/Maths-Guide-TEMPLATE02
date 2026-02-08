@@ -1615,15 +1615,15 @@ export default function MathsGuideStandardForm() {
                   <Badge className="bg-primary text-primary-foreground" data-testid="badge-subject">
                     {SUBJECT}
                   </Badge>
-                  <div className="text-xs text-muted-foreground" data-testid="text-spec-ref">
+                  <div className="text-xs text-muted-foreground" data-testid="text-spec-ref" id="spec-code">
                     Spec {SPEC_REF}
                   </div>
                 </div>
                 <div className="mt-3">
-                  <div className="text-2xl font-semibold leading-tight" style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }} data-testid="text-topic-title">
+                  <div className="text-2xl font-semibold leading-tight" style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }} data-testid="text-topic-title" id="topic-title">
                     {TOPIC}
                   </div>
-                  <div className="mt-1 line-clamp-1 text-sm text-muted-foreground" data-testid="text-topic-subtitle">
+                  <div className="mt-1 line-clamp-1 text-sm text-muted-foreground" data-testid="text-topic-subtitle" id="strapline">
                     {leftSubtitle}
                   </div>
                 </div>
@@ -1646,7 +1646,7 @@ export default function MathsGuideStandardForm() {
               <div className="mb-2 text-xs font-semibold tracking-[0.18em] text-muted-foreground" data-testid="text-lo-title">
                 LEARNING OBJECTIVES
               </div>
-              <div className="grid gap-2">
+              <div className="grid gap-2" id="learning-objectives">
                 {learningObjectives.map((lo, idx) => {
                   const done = objectiveCompletion.find((x) => x.loId === lo.id)?.done;
                   return (
@@ -1804,6 +1804,7 @@ export default function MathsGuideStandardForm() {
                         className="text-lg font-semibold"
                         style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }}
                         data-testid={`text-step-title-${s.id}`}
+                        id={idx === 0 ? "step1-title" : undefined}
                       >
                         {s.title}
                       </div>
@@ -1814,7 +1815,7 @@ export default function MathsGuideStandardForm() {
 
                     {/* Body */}
                     {s.type === "concept" ? (
-                      <div className="mt-3" data-testid={`panel-step-body-${s.id}`}>
+                      <div className="mt-3" data-testid={`panel-step-body-${s.id}`} id={idx === 0 ? "step1-body" : undefined}>
                         {s.explanation}
 
                         {s.analogy ? (
