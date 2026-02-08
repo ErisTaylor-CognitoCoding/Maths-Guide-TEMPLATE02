@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, ChevronDown, ChevronRight, Lock, Pencil, Eraser, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const APP_NAME = "Maths Guide 1.2 Standard form calculations";
 const SUBJECT = "Maths";
@@ -1735,10 +1736,11 @@ export default function MathsGuideStandardForm() {
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <div
-                  className="text-sm font-semibold text-muted-foreground"
+                  className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
                   style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }}
                   data-testid="text-right-title"
                 >
+                  <img src={logo} alt="Cognito Coding Logo" className="h-6 w-6 object-contain" />
                   Cognito Coding – Revision Guide
                 </div>
                 <div
@@ -1929,10 +1931,11 @@ export default function MathsGuideStandardForm() {
 
           {/* Sticky footer */}
           <div
-            className="sticky bottom-0 z-10 border-t border-primary/20 bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
+            className="sticky bottom-0 z-10 flex items-center justify-center gap-2 border-t border-primary/20 bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
             data-testid="footer-sticky"
           >
             Powered by Cognito Coding
+            <img src={logo} alt="Cognito Coding Logo" className="h-5 w-5 object-contain" />
           </div>
         </div>
       </div>
