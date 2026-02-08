@@ -967,6 +967,7 @@ function Diagram({
 
 function McqBlock({
   mcqId,
+  stepIndex,
   question,
   options,
   state,
@@ -974,10 +975,11 @@ function McqBlock({
   locked,
 }: {
   mcqId: string;
+  stepIndex: number;
   question: React.ReactNode;
   options: { id: string; label: React.ReactNode; isCorrect: boolean; explanation: React.ReactNode }[];
   state?: { selectedId?: string; isCorrect?: boolean; feedback?: React.ReactNode };
-  onPick: (optionId: string) => void;
+  onPick: (optId: string) => void;
   locked: boolean;
 }) {
   const selected = state?.selectedId;
@@ -985,7 +987,7 @@ function McqBlock({
 
   return (
     <div className="mt-4" data-testid={`mcq-${mcqId}`}>
-      <div className="text-sm font-semibold" data-testid={`text-mcq-question-${mcqId}`}>
+      <div className="text-sm font-semibold" data-testid={`text-mcq-question-${mcqId}`} id={`step-${stepIndex + 1}-mcq-${mcqId}-question`}>
         {question}
       </div>
       <div className="mt-3 grid gap-2">
@@ -1011,7 +1013,7 @@ function McqBlock({
               data-testid={`button-mcq-option-${mcqId}-${o.id}`}
             >
               <div className="flex items-center justify-between gap-3">
-                <span className={cn(correctSelected && "text-[hsl(142_60%_28%)]", wrongSelected && "text-foreground")}>
+                <span className={cn(correctSelected && "text-[hsl(142_60%_28%)]", wrongSelected && "text-foreground")} id={`step-${stepIndex + 1}-mcq-${mcqId}-option-${o.id}`}>
                   {o.label}
                 </span>
                 {correctSelected ? (
@@ -1034,6 +1036,7 @@ function McqBlock({
 
 function ClozeLine({
   clozeId,
+  stepIndex,
   sentence,
   blanks,
   state,
@@ -1041,6 +1044,7 @@ function ClozeLine({
   locked,
 }: {
   clozeId: string;
+  stepIndex: number;
   sentence: React.ReactNode;
   blanks: {
     id: string;
@@ -1054,7 +1058,7 @@ function ClozeLine({
 }) {
   return (
     <div className="mt-4" data-testid={`cloze-${clozeId}`}>
-      <div className="text-sm leading-6 text-foreground" data-testid={`text-cloze-sentence-${clozeId}`}>
+      <div className="text-sm leading-6 text-foreground" data-testid={`text-cloze-sentence-${clozeId}`} id={`step-${stepIndex + 1}-cloze-${clozeId}-sentence`}>
         {sentence}
       </div>
       <div className="mt-3 grid gap-2">
@@ -1126,6 +1130,7 @@ function ClozeLine({
 
 function PracticeBlock({
   stepId,
+  stepIndex,
   practice,
   locked,
   attempts,
@@ -1138,6 +1143,7 @@ function PracticeBlock({
   showModel,
 }: {
   stepId: string;
+  stepIndex: number;
   practice: NonNullable<Step["practice"]>;
   locked: boolean;
   attempts: number;
@@ -1151,7 +1157,7 @@ function PracticeBlock({
 }) {
   return (
     <div className="mt-4" data-testid={`practice-${stepId}`}>
-      <div className="text-sm leading-6 text-muted-foreground" data-testid={`text-practice-prompt-${stepId}`}>
+      <div className="text-sm leading-6 text-muted-foreground" data-testid={`text-practice-prompt-${stepId}`} id={`step-${stepIndex + 1}-practice-prompt`}>
         {practice.prompt}
       </div>
 
@@ -1801,7 +1807,7 @@ export default function MathsGuideStandardForm() {
                         className="text-lg font-semibold"
                         style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }}
                         data-testid={`text-step-title-${s.id}`}
-                        id={idx === 0 ? "step1-title" : undefined}
+                        id={`step-${idx + 1}-title`}
                       >
                         {s.title}
                       </div>
@@ -1812,26 +1818,26 @@ export default function MathsGuideStandardForm() {
 
                     {/* Body */}
                     {s.type === "concept" ? (
-                      <div className="mt-3" data-testid={`panel-step-body-${s.id}`} id={idx === 0 ? "step1-body" : undefined}>
+                      <div className="mt-3" data-testid={`panel-step-body-${s.id}`} id={`step-${idx + 1}-explanation`}>
                         {s.explanation}
 
                         {s.analogy ? (
                           <div className="mt-4 rounded-xl border border-border bg-secondary p-4" data-testid={`box-analogy-${s.id}`}>
-                            <div className="text-xs font-semibold tracking-[0.14em] text-muted-foreground" data-testid={`text-analogy-title-${s.id}`}>
+                            <div className="text-xs font-semibold tracking-[0.14em] text-muted-foreground" data-testid={`text-analogy-title-${s.id}`} id={`step-${idx + 1}-analogy-title`}>
                               {s.analogy.title ?? "ANALOGY"}
                             </div>
-                            <div className="mt-2">{s.analogy.content}</div>
+                            <div className="mt-2" id={`step-${idx + 1}-analogy-content`}>{s.analogy.content}</div>
                           </div>
                         ) : null}
 
                         {s.workedExample ? (
                           <div className="mt-4 rounded-xl border border-border bg-white p-4" data-testid={`box-example-${s.id}`}>
-                            <div className="text-xs font-semibold tracking-[0.14em] text-muted-foreground" data-testid={`text-example-title-${s.id}`}>
+                            <div className="text-xs font-semibold tracking-[0.14em] text-muted-foreground" data-testid={`text-example-title-${s.id}`} id={`step-${idx + 1}-example-title`}>
                               {s.workedExample.title ?? "WORKED EXAMPLE"}
                             </div>
                             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
                               {s.workedExample.bullets.map((b, i) => (
-                                <li key={i} data-testid={`text-example-bullet-${s.id}-${i}`}> {b}</li>
+                                <li key={i} data-testid={`text-example-bullet-${s.id}-${i}`} id={`step-${idx + 1}-example-bullet-${i}`}> {b}</li>
                               ))}
                             </ul>
                           </div>
@@ -1845,6 +1851,7 @@ export default function MathsGuideStandardForm() {
                           <McqBlock
                             key={q.id}
                             mcqId={q.id}
+                            stepIndex={idx}
                             question={q.question}
                             options={q.options}
                             state={mcqState[q.id]}
@@ -1861,6 +1868,7 @@ export default function MathsGuideStandardForm() {
                           <ClozeLine
                             key={line.id}
                             clozeId={line.id}
+                            stepIndex={idx}
                             sentence={line.sentence}
                             blanks={line.blanks}
                             state={clozeState[line.id]}
@@ -1875,6 +1883,7 @@ export default function MathsGuideStandardForm() {
                       <div className="mt-3" data-testid={`panel-step-body-${s.id}`}>
                         <PracticeBlock
                           stepId={s.id}
+                          stepIndex={idx}
                           practice={s.practice}
                           locked={locked}
                           attempts={attempts.practiceAttempts[s.id] ?? 0}
