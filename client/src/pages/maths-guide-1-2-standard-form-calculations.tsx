@@ -46,27 +46,27 @@ type Step = {
   title: string;
   explanation?: React.ReactNode;
   analogy?: { title?: string; content: React.ReactNode };
-  workedExample?: { title?: string; bullets: string[] };
+  workedExample?: { title?: string; bullets: React.ReactNode[] };
   mcqs?: {
     id: string;
-    question: string;
-    options: { id: string; label: string; isCorrect: boolean; explanation: string }[];
+    question: React.ReactNode;
+    options: { id: string; label: React.ReactNode; isCorrect: boolean; explanation: React.ReactNode }[];
   }[];
   cloze?: {
     id: string;
     sentence: React.ReactNode;
     blanks: {
       id: string;
-      options: { value: string; label: string; isCorrect: boolean; feedback: string }[];
+      options: { value: string; label: React.ReactNode; isCorrect: boolean; feedback: React.ReactNode }[];
     }[];
   }[];
   practice?: {
-    prompt: string;
+    prompt: React.ReactNode;
     mustHaveKeywords: string[];
     optionalKeywords: string[];
-    modelAnswer: string;
-    scaffoldPrompts: string[];
-    hint: string;
+    modelAnswer: React.ReactNode;
+    scaffoldPrompts: React.ReactNode[];
+    hint: React.ReactNode;
   };
 };
 
@@ -109,10 +109,10 @@ const steps: Step[] = [
     workedExample: {
       title: "Worked example idea",
       bullets: [
-        "(3.2 × 10^5) × (4 × 10^2)",
+        <span>(3.2 × 10<sup>5</sup>) × (4 × 10<sup>2</sup>)</span>,
         "Multiply coefficients: 3.2 × 4 = 12.8",
-        "Add indices: 10^(5+2) = 10^7",
-        "So: 12.8 × 10^7 → adjust to standard form: 1.28 × 10^8",
+        <span>Add indices: 10<sup>5+2</sup> = 10<sup>7</sup></span>,
+        <span>So: 12.8 × 10<sup>7</sup> → adjust to standard form: 1.28 × 10<sup>8</sup></span>,
       ],
     },
   },
@@ -125,22 +125,22 @@ const steps: Step[] = [
     mcqs: [
       {
         id: "mcq-1a",
-        question: "What is 10^3 × 10^5?",
+        question: <span>What is 10<sup>3</sup> × 10<sup>5</sup>?</span>,
         options: [
-          { id: "a", label: "10^15", isCorrect: false, explanation: "You add indices (3+5), not multiply them." },
-          { id: "b", label: "10^8", isCorrect: true, explanation: "Correct: 10^(3+5) = 10^8." },
-          { id: "c", label: "10^2", isCorrect: false, explanation: "That would be subtraction (3−5)." },
-          { id: "d", label: "10^35", isCorrect: false, explanation: "That’s multiplying indices (3×5), which is not the law." },
+          { id: "a", label: <span>10<sup>15</sup></span>, isCorrect: false, explanation: "You add indices (3+5), not multiply them." },
+          { id: "b", label: <span>10<sup>8</sup></span>, isCorrect: true, explanation: <span>Correct: 10<sup>3+5</sup> = 10<sup>8</sup>.</span> },
+          { id: "c", label: <span>10<sup>2</sup></span>, isCorrect: false, explanation: "That would be subtraction (3−5)." },
+          { id: "d", label: <span>10<sup>35</sup></span>, isCorrect: false, explanation: "That’s multiplying indices (3×5), which is not the law." },
         ],
       },
       {
         id: "mcq-1b",
-        question: "(6 × 10^4) ÷ (2 × 10^2) = ?",
+        question: <span>(6 × 10<sup>4</sup>) ÷ (2 × 10<sup>2</sup>) = ?</span>,
         options: [
-          { id: "a", label: "3 × 10^2", isCorrect: true, explanation: "6÷2=3 and 10^(4−2)=10^2." },
-          { id: "b", label: "12 × 10^6", isCorrect: false, explanation: "Division means subtract indices, not add, and 6÷2 is 3." },
-          { id: "c", label: "3 × 10^6", isCorrect: false, explanation: "You subtracted incorrectly: 4−2=2." },
-          { id: "d", label: "8 × 10^2", isCorrect: false, explanation: "Coefficient is 3, not 8." },
+          { id: "a", label: <span>3 × 10<sup>2</sup></span>, isCorrect: true, explanation: <span>6÷2=3 and 10<sup>4−2</sup>=10<sup>2</sup>.</span> },
+          { id: "b", label: <span>12 × 10<sup>6</sup></span>, isCorrect: false, explanation: "Division means subtract indices, not add, and 6÷2 is 3." },
+          { id: "c", label: <span>3 × 10<sup>6</sup></span>, isCorrect: false, explanation: "You subtracted incorrectly: 4−2=2." },
+          { id: "d", label: <span>8 × 10<sup>2</sup></span>, isCorrect: false, explanation: "Coefficient is 3, not 8." },
         ],
       },
     ],
@@ -253,11 +253,11 @@ const steps: Step[] = [
     title: "Practice question",
     practice: {
       prompt:
-        "Explain how you would calculate (7.5 × 10^6) ÷ (3 × 10^2) and write the final answer in standard form.",
+        <span>Explain how you would calculate (7.5 × 10<sup>6</sup>) ÷ (3 × 10<sup>2</sup>) and write the final answer in standard form.</span>,
       mustHaveKeywords: ["divide coefficients", "subtract indices", "standard form", "1 ≤ a < 10"],
       optionalKeywords: ["7.5 ÷ 3", "10^(6−2)", "2.5 × 10^4"],
       modelAnswer:
-        "Divide the coefficients: 7.5 ÷ 3 = 2.5. Subtract the indices for division: 10^6 ÷ 10^2 = 10^(6−2) = 10^4. Combine to get 2.5 × 10^4, which is already in standard form because 1 ≤ 2.5 < 10.",
+        <span>Divide the coefficients: 7.5 ÷ 3 = 2.5. Subtract the indices for division: 10<sup>6</sup> ÷ 10<sup>2</sup> = 10<sup>6−2</sup> = 10<sup>4</sup>. Combine to get 2.5 × 10<sup>4</sup>, which is already in standard form because 1 ≤ 2.5 &lt; 10.</span>,
       scaffoldPrompts: [
         "What do you do with 7.5 and 3?",
         "What happens to the powers of 10 when dividing?",
@@ -277,8 +277,8 @@ const steps: Step[] = [
     explanation: (
       <>
         <p className="text-sm leading-6 text-muted-foreground" data-testid="text-expl-add-1">
-          You can only add or subtract the coefficients when the powers of 10 match. That’s because <span className="font-semibold">2 × 10^5</span>
-          and <span className="font-semibold">2 × 10^6</span> are different “units” of size (hundred-thousands vs millions).
+          You can only add or subtract the coefficients when the powers of 10 match. That’s because <span className="font-semibold">2 × 10<sup>5</sup></span>
+          and <span className="font-semibold">2 × 10<sup>6</sup></span> are different “units” of size (hundred-thousands vs millions).
         </p>
         <p className="mt-3 text-sm leading-6 text-muted-foreground" data-testid="text-expl-add-2">
           If the indices are different, convert one number so both have the same power of 10. Then add/subtract coefficients and adjust back into standard form.
@@ -297,10 +297,10 @@ const steps: Step[] = [
     workedExample: {
       title: "Worked example idea",
       bullets: [
-        "(3.4 × 10^5) + (7.2 × 10^4)",
-        "Convert 7.2 × 10^4 to ×10^5: 0.72 × 10^5",
+        <span>(3.4 × 10<sup>5</sup>) + (7.2 × 10<sup>4</sup>)</span>,
+        <span>Convert 7.2 × 10<sup>4</sup> to ×10<sup>5</sup>: 0.72 × 10<sup>5</sup></span>,
         "Add coefficients: 3.4 + 0.72 = 4.12",
-        "Answer: 4.12 × 10^5 (already standard form)",
+        <span>Answer: 4.12 × 10<sup>5</sup> (already standard form)</span>,
       ],
     },
   },
@@ -313,29 +313,29 @@ const steps: Step[] = [
     mcqs: [
       {
         id: "mcq-2a",
-        question: "Which is a correct first step for (5.1×10^6) + (3.0×10^5)?",
+        question: <span>Which is a correct first step for (5.1×10<sup>6</sup>) + (3.0×10<sup>5</sup>)?</span>,
         options: [
           {
             id: "a",
-            label: "Add coefficients immediately: 8.1×10^11",
+            label: <span>Add coefficients immediately: 8.1×10<sup>11</sup></span>,
             isCorrect: false,
             explanation: "You can’t add until powers match; also the power is wrong.",
           },
           {
             id: "b",
-            label: "Convert 3.0×10^5 to 0.30×10^6",
+            label: <span>Convert 3.0×10<sup>5</sup> to 0.30×10<sup>6</sup></span>,
             isCorrect: true,
-            explanation: "Correct: make both powers 10^6 (or both 10^5).",
+            explanation: <span>Correct: make both powers 10<sup>6</sup> (or both 10<sup>5</sup>).</span>,
           },
           {
             id: "c",
-            label: "Convert 5.1×10^6 to 51×10^6",
+            label: <span>Convert 5.1×10<sup>6</sup> to 51×10<sup>6</sup></span>,
             isCorrect: false,
             explanation: "That breaks the 1 ≤ a < 10 rule and doesn’t help matching powers.",
           },
           {
             id: "d",
-            label: "Subtract indices: 10^(6−5)",
+            label: <span>Subtract indices: 10<sup>6−5</sup></span>,
             isCorrect: false,
             explanation: "Index subtraction is for division, not addition.",
           },
@@ -373,7 +373,7 @@ const steps: Step[] = [
         id: "terms-2b",
         sentence: (
           <span data-testid="text-terms-sentence-2b">
-            Changing <span className="font-semibold">3.0 × 10^5</span> to <span className="font-semibold">0.30 × 10^6</span> keeps the value the same because you moved the decimal one place and changed the index by <span className="font-semibold">_____</span>.
+            Changing <span className="font-semibold">3.0 × 10<sup>5</sup></span> to <span className="font-semibold">0.30 × 10<sup>6</sup></span> keeps the value the same because you moved the decimal one place and changed the index by <span className="font-semibold">_____</span>.
           </span>
         ),
         blanks: [
@@ -381,7 +381,7 @@ const steps: Step[] = [
             id: "blank-2b",
             options: [
               { value: "+1", label: "+1", isCorrect: true, feedback: "Yes: index increases by 1 when decimal moves left." },
-              { value: "−1", label: "−1", isCorrect: false, feedback: "Hint: 10^6 is bigger than 10^5, so the index went up." },
+              { value: "−1", label: "−1", isCorrect: false, feedback: <span>Hint: 10<sup>6</sup> is bigger than 10<sup>5</sup>, so the index went up.</span> },
               { value: "+2", label: "+2", isCorrect: false, feedback: "Only one place moved." },
               { value: "0", label: "0", isCorrect: false, feedback: "The index must change if the decimal moved." },
             ],
@@ -436,14 +436,14 @@ const steps: Step[] = [
     title: "Practice question",
     practice: {
       prompt:
-        "Explain how you would calculate (4.8 × 10^7) + (3.6 × 10^6). Include the conversion step and the final answer in standard form.",
+        <span>Explain how you would calculate (4.8 × 10<sup>7</sup>) + (3.6 × 10<sup>6</sup>). Include the conversion step and the final answer in standard form.</span>,
       mustHaveKeywords: ["same power", "convert", "add coefficients", "standard form"],
       optionalKeywords: ["0.36 × 10^7", "4.8 + 0.36", "5.16 × 10^7"],
       modelAnswer:
-        "Make the powers match by converting 3.6 × 10^6 to 0.36 × 10^7. Then add coefficients: 4.8 + 0.36 = 5.16. Keep the power of 10 as 10^7, giving 5.16 × 10^7.",
+        <span>Make the powers match by converting 3.6 × 10<sup>6</sup> to 0.36 × 10<sup>7</sup>. Then add coefficients: 4.8 + 0.36 = 5.16. Keep the power of 10 as 10<sup>7</sup>, giving 5.16 × 10<sup>7</sup>.</span>,
       scaffoldPrompts: [
         "Which number will you rewrite to match the power of 10?",
-        "What happens to the coefficient when you change 10^6 to 10^7?",
+        <span>What happens to the coefficient when you change 10<sup>6</sup> to 10<sup>7</sup>?</span>,
         "After adding, is your coefficient between 1 and 10?",
       ],
       hint: "Make sure you mention matching the powers of 10 before adding.",
@@ -481,7 +481,7 @@ const steps: Step[] = [
       bullets: [
         "Convert 3,500,000 to standard form",
         "Move decimal 6 places left: 3.5",
-        "So: 3.5 × 10^6",
+        <span>So: 3.5 × 10<sup>6</sup></span>,
         "Check quickly: 3.5 million matches 3,500,000",
       ],
     },
@@ -497,10 +497,10 @@ const steps: Step[] = [
         id: "mcq-3a",
         question: "Which is the standard form of 0.00072?",
         options: [
-          { id: "a", label: "7.2 × 10^−4", isCorrect: true, explanation: "Move the decimal 4 places right to get 7.2, so use 10^−4." },
-          { id: "b", label: "72 × 10^−5", isCorrect: false, explanation: "Coefficient must be between 1 and 10." },
-          { id: "c", label: "0.72 × 10^−3", isCorrect: false, explanation: "Coefficient must be at least 1." },
-          { id: "d", label: "7.2 × 10^4", isCorrect: false, explanation: "The number is small, so the index should be negative." },
+          { id: "a", label: <span>7.2 × 10<sup>−4</sup></span>, isCorrect: true, explanation: <span>Move the decimal 4 places right to get 7.2, so use 10<sup>−4</sup>.</span> },
+          { id: "b", label: <span>72 × 10<sup>−5</sup></span>, isCorrect: false, explanation: "Coefficient must be between 1 and 10." },
+          { id: "c", label: <span>0.72 × 10<sup>−3</sup></span>, isCorrect: false, explanation: "Coefficient must be at least 1." },
+          { id: "d", label: <span>7.2 × 10<sup>4</sup></span>, isCorrect: false, explanation: "The number is small, so the index should be negative." },
         ],
       },
     ],
@@ -621,7 +621,7 @@ const steps: Step[] = [
       mustHaveKeywords: ["decimal", "places", "index", "standard form", "calculator"],
       optionalKeywords: ["9.3 × 10^9", "move decimal 9 places", "check by multiplying"],
       modelAnswer:
-        "9,300,000,000 = 9.3 × 10^9 because moving the decimal 9 places left turns 9,300,000,000 into 9.3, so the index is 9. You can check with a calculator by entering 9.3E9 (or 9.3 × 10^9) and confirming it displays 9,300,000,000.",
+        <span>9,300,000,000 = 9.3 × 10<sup>9</sup> because moving the decimal 9 places left turns 9,300,000,000 into 9.3, so the index is 9. You can check with a calculator by entering 9.3E9 (or 9.3 × 10<sup>9</sup>) and confirming it displays 9,300,000,000.</span>,
       scaffoldPrompts: [
         "Where should the decimal go to make a between 1 and 10?",
         "How many places did you move it?",
@@ -637,12 +637,12 @@ type AttemptState = {
   practiceText: Record<string, string>;
 };
 
-type McqState = Record<string, { selectedId?: string; isCorrect?: boolean; feedback?: string }>;
+type McqState = Record<string, { selectedId?: string; isCorrect?: boolean; feedback?: React.ReactNode }>;
 
 type ClozeState = Record<
   string,
   {
-    selections: Record<string, { value?: string; isCorrect?: boolean; feedback?: string }>;
+    selections: Record<string, { value?: string; isCorrect?: boolean; feedback?: React.ReactNode }>;
   }
 >;
 
@@ -863,7 +863,7 @@ function Diagram({
               transition={{ duration: 0.45 }}
             >
               <text x="495" y="160" fontSize="22" fill="hsl(20 15% 18%)" fontFamily="Inter, sans-serif" fontWeight={600}>
-                10^m × 10^n = 10^(m+n)
+                10<tspan baselineShift="super" fontSize="75%">m</tspan> × 10<tspan baselineShift="super" fontSize="75%">n</tspan> = 10<tspan baselineShift="super" fontSize="75%">m+n</tspan>
               </text>
             </motion.g>
 
@@ -873,7 +873,7 @@ function Diagram({
               transition={{ duration: 0.45, delay: 0.05 }}
             >
               <text x="495" y="198" fontSize="22" fill="hsl(20 15% 18%)" fontFamily="Inter, sans-serif" fontWeight={600}>
-                10^m ÷ 10^n = 10^(m−n)
+                10<tspan baselineShift="super" fontSize="75%">m</tspan> ÷ 10<tspan baselineShift="super" fontSize="75%">n</tspan> = 10<tspan baselineShift="super" fontSize="75%">m−n</tspan>
               </text>
             </motion.g>
 
@@ -920,7 +920,7 @@ function Diagram({
                 opacity={0.5}
               />
               <text x="90" y="360" fontSize="15" fill="hsl(20 10% 40%)" fontFamily="Inter, sans-serif">
-                Rewrite one coefficient so both are ×10^k, then add/subtract coefficients.
+                Rewrite one coefficient so both are ×10<tspan baselineShift="super" fontSize="75%">k</tspan>, then add/subtract coefficients.
               </text>
             </motion.g>
           </g>
@@ -981,9 +981,9 @@ function McqBlock({
   locked,
 }: {
   mcqId: string;
-  question: string;
-  options: { id: string; label: string; isCorrect: boolean; explanation: string }[];
-  state?: { selectedId?: string; isCorrect?: boolean; feedback?: string };
+  question: React.ReactNode;
+  options: { id: string; label: React.ReactNode; isCorrect: boolean; explanation: React.ReactNode }[];
+  state?: { selectedId?: string; isCorrect?: boolean; feedback?: React.ReactNode };
   onPick: (optionId: string) => void;
   locked: boolean;
 }) {
@@ -1051,10 +1051,10 @@ function ClozeLine({
   sentence: React.ReactNode;
   blanks: {
     id: string;
-    options: { value: string; label: string; isCorrect: boolean; feedback: string }[];
+    options: { value: string; label: React.ReactNode; isCorrect: boolean; feedback: React.ReactNode }[];
   }[];
   state?: {
-    selections: Record<string, { value?: string; isCorrect?: boolean; feedback?: string }>;
+    selections: Record<string, { value?: string; isCorrect?: boolean; feedback?: React.ReactNode }>;
   };
   onSelect: (blankId: string, value: string) => void;
   locked: boolean;
@@ -1152,7 +1152,7 @@ function PracticeBlock({
   onChangeText: (v: string) => void;
   onSubmit: () => void;
   status?: "Missing" | "Almost" | "Complete";
-  feedback?: string;
+  feedback?: React.ReactNode;
   showScaffold: boolean;
   showModel: boolean;
 }) {
@@ -1209,7 +1209,7 @@ function PracticeBlock({
               </div>
               <ul className="mt-2 list-disc pl-5 text-sm text-muted-foreground">
                 {practice.scaffoldPrompts.map((p, i) => (
-                  <li key={p} data-testid={`text-scaffold-${stepId}-${i}`}> {p}</li>
+                  <li key={i} data-testid={`text-scaffold-${stepId}-${i}`}> {p}</li>
                 ))}
               </ul>
             </div>
@@ -1437,7 +1437,7 @@ export default function MathsGuideStandardForm() {
   const [mcqState, setMcqState] = React.useState<McqState>({});
   const [clozeState, setClozeState] = React.useState<ClozeState>({});
   const [attempts, setAttempts] = React.useState<AttemptState>({ practiceAttempts: {}, practiceText: {} });
-  const [practiceEval, setPracticeEval] = React.useState<Record<string, { status: "Missing" | "Almost" | "Complete"; feedback: string }>>(
+  const [practiceEval, setPracticeEval] = React.useState<Record<string, { status: "Missing" | "Almost" | "Complete"; feedback: React.ReactNode }>>(
     {},
   );
   const [showModel, setShowModel] = React.useState<Record<string, boolean>>({});
@@ -1712,9 +1712,9 @@ export default function MathsGuideStandardForm() {
                     data-testid="panel-quick-notes"
                   >
                     <ul className="list-disc space-y-1 pl-5">
-                      <li data-testid="text-quick-note-0">Standard form: a × 10^n with 1 ≤ a &lt; 10</li>
-                      <li data-testid="text-quick-note-1">Multiply: add indices (10^m × 10^n = 10^(m+n))</li>
-                      <li data-testid="text-quick-note-2">Divide: subtract indices (10^m ÷ 10^n = 10^(m−n))</li>
+                      <li data-testid="text-quick-note-0">Standard form: a × 10<sup>n</sup> with 1 ≤ a &lt; 10</li>
+                      <li data-testid="text-quick-note-1">Multiply: add indices (10<sup>m</sup> × 10<sup>n</sup> = 10<sup>m+n</sup>)</li>
+                      <li data-testid="text-quick-note-2">Divide: subtract indices (10<sup>m</sup> ÷ 10<sup>n</sup> = 10<sup>m−n</sup>)</li>
                       <li data-testid="text-quick-note-3">Add/subtract: powers must match first</li>
                     </ul>
                   </div>
@@ -1832,8 +1832,8 @@ export default function MathsGuideStandardForm() {
                               {s.workedExample.title ?? "WORKED EXAMPLE"}
                             </div>
                             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-                              {s.workedExample.bullets.map((b) => (
-                                <li key={b} data-testid={`text-example-bullet-${s.id}-${b.slice(0, 12)}`}> {b}</li>
+                              {s.workedExample.bullets.map((b, i) => (
+                                <li key={i} data-testid={`text-example-bullet-${s.id}-${i}`}> {b}</li>
                               ))}
                             </ul>
                           </div>
