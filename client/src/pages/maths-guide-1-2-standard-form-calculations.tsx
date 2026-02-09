@@ -1459,12 +1459,67 @@ export default function MathsGuideStandardForm() {
 
             // Deep merge logic would go here, for now we override title and explanation
             // If the external content has 'mcqs', we'd map those too if the structure matches
-            return {
+            const newStep = {
               ...step,
               title: externalStep.title || step.title,
               explanation: externalStep.explanation ? <div dangerouslySetInnerHTML={{ __html: externalStep.explanation }} /> : step.explanation,
-              // Map other fields as needed...
             };
+
+            if (externalStep.analogy) {
+              newStep.analogy = {
+                title: externalStep.analogy.title,
+                content: <div dangerouslySetInnerHTML={{ __html: externalStep.analogy.content }} />
+              };
+            }
+
+            if (externalStep.workedExample) {
+              newStep.workedExample = {
+                title: externalStep.workedExample.title,
+                bullets: externalStep.workedExample.bullets.map((b: string) => <div dangerouslySetInnerHTML={{ __html: b }} />)
+              };
+            }
+
+            if (externalStep.mcqs) {
+              newStep.mcqs = externalStep.mcqs.map((q: any) => ({
+                id: q.id,
+                question: <div dangerouslySetInnerHTML={{ __html: q.question }} />,
+                options: q.options.map((o: any) => ({
+                  id: o.id,
+                  label: <div dangerouslySetInnerHTML={{ __html: o.label }} />,
+                  isCorrect: o.isCorrect ?? false, // Default to false if missing
+                  explanation: o.explanation ?? ""
+                }))
+              }));
+            }
+
+            if (externalStep.cloze) {
+              newStep.cloze = externalStep.cloze.map((c: any) => ({
+                id: c.id,
+                sentence: <div dangerouslySetInnerHTML={{ __html: c.sentence }} />,
+                blanks: c.blanks ? c.blanks.map((b: any) => ({
+                  id: b.id,
+                  options: b.options.map((o: any) => ({
+                    value: o.value,
+                    label: o.label,
+                    isCorrect: o.isCorrect ?? false,
+                    feedback: o.feedback ?? ""
+                  }))
+                })) : []
+              }));
+            }
+
+            if (externalStep.practice) {
+              newStep.practice = {
+                ...step.practice!, // Keep existing defaults if missing
+                prompt: <div dangerouslySetInnerHTML={{ __html: externalStep.practice.prompt }} />,
+                mustHaveKeywords: externalStep.practice.mustHaveKeywords || step.practice!.mustHaveKeywords,
+                optionalKeywords: externalStep.practice.optionalKeywords || step.practice!.optionalKeywords,
+                modelAnswer: externalStep.practice.modelAnswer ? <div dangerouslySetInnerHTML={{ __html: externalStep.practice.modelAnswer }} /> : step.practice!.modelAnswer,
+                hint: externalStep.practice.hint || step.practice!.hint,
+              };
+            }
+
+            return newStep;
           });
         });
       }
