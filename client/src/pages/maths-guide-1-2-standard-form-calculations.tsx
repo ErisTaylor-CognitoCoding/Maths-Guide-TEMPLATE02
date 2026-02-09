@@ -70,7 +70,7 @@ type Step = {
   };
 };
 
-const steps: Step[] = [
+const INITIAL_STEPS: Step[] = [
   // LO 1 — multiply/divide (index laws)
   {
     id: "s1-concept",
@@ -1442,6 +1442,41 @@ export default function MathsGuideStandardForm() {
   const [showModel, setShowModel] = React.useState<Record<string, boolean>>({});
   const [whiteboardOpen, setWhiteboardOpen] = React.useState(false);
   const [quickNotesOpen, setQuickNotesOpen] = React.useState(false);
+  const [steps, setSteps] = React.useState<Step[]>(INITIAL_STEPS);
+
+  React.useEffect(() => {
+    // Check for window.lessonContent and hydrate if available
+    // This allows external scripts (like n8n) to override content
+    const checkForContent = () => {
+      // @ts-ignore
+      const externalContent = window.lessonContent;
+      if (externalContent) {
+        setSteps((prevSteps) => {
+          return prevSteps.map((step, idx) => {
+            // Map flat step1, step2 structure to our typed steps
+            const externalStep = externalContent[`step${idx + 1}`];
+            if (!externalStep) return step;
+
+            // Deep merge logic would go here, for now we override title and explanation
+            // If the external content has 'mcqs', we'd map those too if the structure matches
+            return {
+              ...step,
+              title: externalStep.title || step.title,
+              explanation: externalStep.explanation ? <div dangerouslySetInnerHTML={{ __html: externalStep.explanation }} /> : step.explanation,
+              // Map other fields as needed...
+            };
+          });
+        });
+      }
+    };
+    
+    // Check immediately and also set up a listener/poller if needed
+    checkForContent();
+    
+    // Simple poller in case the script loads late
+    const interval = setInterval(checkForContent, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const totalSteps = steps.length;
   const currentStep = steps[activeStep];
