@@ -1,0 +1,83 @@
+Use this as your instruction to Replit (paste it straight into the agent / model there):
+
+You are editing my existing GCSE maths presentation project.
+Your job is to turn it into a generic template that takes all lesson content from window.lessonContent (in lesson-loader.js) so I never have to rebuild for new topics.
+
+Do NOT change the visual design, layout, animations, or branding.
+Only change how the content is loaded.
+
+Concrete tasks:
+
+Find the main React component that renders the lesson (the one with the big steps array and all the hardcoded text for “Maths Guide 1.2 Standard form calculations”).
+
+Remove all hardcoded lesson text from that component:
+
+No hardcoded explanations, learning objectives, questions, options, or summaries.
+
+Keep the component structure and JSX, but replace the actual strings with values taken from window.lessonContent.
+
+At the top of that component, read the global content object:
+
+ts
+declare global {
+  interface Window {
+    lessonContent?: any;
+  }
+}
+
+const data = window.lessonContent;
+If window.lessonContent is missing, you can fall back to a minimal placeholder so the app doesn’t crash, but do NOT reintroduce real lesson content as defaults.
+
+Wire every part of the UI to data:
+
+Page header: data.subject, data.specCode, data.topicTitle, data.strapline.
+
+Learning objectives list: data.learningObjectives (array of strings).
+
+Steps: data.step1, data.step2, … up to at least step15, each with:
+
+title
+
+optional explanation
+
+optional analogy.title and analogy.content
+
+optional workedExample.title and workedExample.bullets[]
+
+optional mcqs[] (each with id, question, options[] { id, label })
+
+optional cloze[] (each with id, sentence)
+
+optional practice.prompt
+
+Knowledge checks, dropdown cloze, summary cloze, and practice blocks should all render from these fields instead of any internal arrays.
+
+Use the same IDs that already exist in the DOM (e.g. topic-title, learning-objectives, step-1-title, etc.) or, if the React component doesn’t use them, make sure the React state is the single source of truth and completely driven by data.
+
+Make sure any SVG / “visual map” component also reads from data instead of hardcoded lesson info. It should be controlled by fields in window.lessonContent (for example, which step is highlighted), not by baked-in values.
+
+Ensure that at runtime the sequence is:
+
+lesson-loader.js loads first and sets window.lessonContent = { ... }.
+
+The React app starts and immediately uses window.lessonContent for its initial state.
+
+Changing lesson-loader.js (with the same shape) changes the entire presentation without rebuilding.
+
+When you’re done, run npm run build and make sure the built index.html and assets folder still show the same visual quality as the current live presentation, but with all text coming from window.lessonContent.
+
+Important constraints:
+
+Do NOT add any new build step or environment requirement beyond what already exists.
+
+Do NOT reintroduce any hardcoded topic content into the React code after this change.
+
+The final build must be usable as a fixed template: I should be able to deploy the built index.html + assets once, then only update lesson-loader.js via my n8n workflow for each new topic.
+
+When you are finished, summarise exactly:
+
+Which files you changed.
+
+Which props/fields of window.lessonContent the UI now uses.
+
+Any assumptions you’ve made about the structure of window.lessonContent.

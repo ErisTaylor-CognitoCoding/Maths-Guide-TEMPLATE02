@@ -10,37 +10,17 @@ import { CheckCircle2, ChevronDown, ChevronRight, Lock, Pencil, Eraser, Trash2 }
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
-const APP_NAME = "Maths Guide 1.2 Standard form calculations";
-const SUBJECT = "Maths";
-const SPEC_REF = "1.2";
-const TOPIC = "Standard form calculations";
-
-const learningObjectives = [
-  {
-    id: "lo-multiply-divide",
-    label:
-      "Students should multiply and divide numbers in standard form by applying index laws",
-    shortRef: "Math 1.2",
-  },
-  {
-    id: "lo-add-subtract",
-    label:
-      "Students should add and subtract numbers in standard form by first ensuring the powers of 10 are the same",
-    shortRef: "Math 1.2",
-  },
-  {
-    id: "lo-convert",
-    label:
-      "Students should convert between ordinary numbers and standard form, and use calculators effectively to check answers involving very large or very small numbers",
-    shortRef: "Math 1.2",
-  },
-] as const;
+declare global {
+  interface Window {
+    lessonContent?: any;
+  }
+}
 
 type StepType = "concept" | "mcq" | "terms" | "summary" | "practice";
 
 type Step = {
   id: string;
-  objectiveId: (typeof learningObjectives)[number]["id"];
+  objectiveId: string;
   type: StepType;
   loRef: string;
   title: string;
@@ -70,567 +50,10 @@ type Step = {
   };
 };
 
-const INITIAL_STEPS: Step[] = [
-  // LO 1 — multiply/divide (index laws)
-  {
-    id: "s1-concept",
-    objectiveId: "lo-multiply-divide",
-    type: "concept",
-    loRef: "MATH 1.2",
-    title: "Multiply & divide in standard form using index laws",
-    explanation: (
-      <>
-        <p className="text-sm leading-6 text-muted-foreground" data-testid="text-expl-multiply-1">
-          Standard form (scientific notation) writes numbers as <span className="font-semibold">a × 10</span>
-          <sup className="font-semibold">n</sup>, where <span className="font-semibold">1 ≤ a &lt; 10</span>.
-          When multiplying or dividing, treat it as two parts: multiply/divide the <span className="font-semibold">coefficients</span>
-          (the a-values) and then combine the powers of 10 using index laws.
-        </p>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground" data-testid="text-expl-multiply-2">
-          Index laws you need: <span className="font-semibold">10</span>
-          <sup className="font-semibold">m</sup> × <span className="font-semibold">10</span>
-          <sup className="font-semibold">n</sup> = <span className="font-semibold">10</span>
-          <sup className="font-semibold">m+n</sup> and <span className="font-semibold">10</span>
-          <sup className="font-semibold">m</sup> ÷ <span className="font-semibold">10</span>
-          <sup className="font-semibold">n</sup> = <span className="font-semibold">10</span>
-          <sup className="font-semibold">m-n</sup>.
-        </p>
-      </>
-    ),
-    analogy: {
-      title: "Analogy",
-      content: (
-        <p className="text-sm leading-6 text-muted-foreground" data-testid="text-analogy-multiply">
-          Think of the power of 10 as a “place-value shift”. When you multiply by 10, you shift left; dividing shifts right.
-          Adding/subtracting indices is like combining two shifts into one net shift.
-        </p>
-      ),
-    },
-    workedExample: {
-      title: "Worked example idea",
-      bullets: [
-        <span>(3.2 × 10<sup>5</sup>) × (4 × 10<sup>2</sup>)</span>,
-        "Multiply coefficients: 3.2 × 4 = 12.8",
-        <span>Add indices: 10<sup>5+2</sup> = 10<sup>7</sup></span>,
-        <span>So: 12.8 × 10<sup>7</sup> → adjust to standard form: 1.28 × 10<sup>8</sup></span>,
-      ],
-    },
-  },
-  {
-    id: "s1-mcq",
-    objectiveId: "lo-multiply-divide",
-    type: "mcq",
-    loRef: "MATH 1.2",
-    title: "Knowledge check: index laws in action",
-    mcqs: [
-      {
-        id: "mcq-1a",
-        question: <span>What is 10<sup>3</sup> × 10<sup>5</sup>?</span>,
-        options: [
-          { id: "a", label: <span>10<sup>15</sup></span>, isCorrect: false, explanation: "You add indices (3+5), not multiply them." },
-          { id: "b", label: <span>10<sup>8</sup></span>, isCorrect: true, explanation: <span>Correct: 10<sup>3+5</sup> = 10<sup>8</sup>.</span> },
-          { id: "c", label: <span>10<sup>2</sup></span>, isCorrect: false, explanation: "That would be subtraction (3−5)." },
-          { id: "d", label: <span>10<sup>35</sup></span>, isCorrect: false, explanation: "That’s multiplying indices (3×5), which is not the law." },
-        ],
-      },
-      {
-        id: "mcq-1b",
-        question: <span>(6 × 10<sup>4</sup>) ÷ (2 × 10<sup>2</sup>) = ?</span>,
-        options: [
-          { id: "a", label: <span>3 × 10<sup>2</sup></span>, isCorrect: true, explanation: <span>6÷2=3 and 10<sup>4−2</sup>=10<sup>2</sup>.</span> },
-          { id: "b", label: <span>12 × 10<sup>6</sup></span>, isCorrect: false, explanation: "Division means subtract indices, not add, and 6÷2 is 3." },
-          { id: "c", label: <span>3 × 10<sup>6</sup></span>, isCorrect: false, explanation: "You subtracted incorrectly: 4−2=2." },
-          { id: "d", label: <span>8 × 10<sup>2</sup></span>, isCorrect: false, explanation: "Coefficient is 3, not 8." },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s1-terms",
-    objectiveId: "lo-multiply-divide",
-    type: "terms",
-    loRef: "MATH 1.2",
-    title: "Key terminology: index laws (dropdown cloze)",
-    cloze: [
-      {
-        id: "terms-1a",
-        sentence: (
-          <span data-testid="text-terms-sentence-1a">
-            When multiplying powers of 10, you <span className="font-semibold">_____</span> the indices.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "blank-1a",
-            options: [
-              { value: "add", label: "add", isCorrect: true, feedback: "Correct: multiply → add indices." },
-              { value: "subtract", label: "subtract", isCorrect: false, feedback: "Hint: subtraction is for division." },
-              { value: "multiply", label: "multiply", isCorrect: false, feedback: "No—don’t multiply indices." },
-              { value: "ignore", label: "ignore", isCorrect: false, feedback: "Indices matter: they tell you the power of 10." },
-            ],
-          },
-        ],
-      },
-      {
-        id: "terms-1b",
-        sentence: (
-          <span data-testid="text-terms-sentence-1b">
-            When dividing powers of 10, you <span className="font-semibold">_____</span> the indices.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "blank-1b",
-            options: [
-              { value: "subtract", label: "subtract", isCorrect: true, feedback: "Correct: divide → subtract indices." },
-              { value: "add", label: "add", isCorrect: false, feedback: "Hint: adding is for multiplication." },
-              { value: "square", label: "square", isCorrect: false, feedback: "Squaring isn’t part of the index laws here." },
-              { value: "swap", label: "swap", isCorrect: false, feedback: "No swapping needed—just subtract." },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s1-summary",
-    objectiveId: "lo-multiply-divide",
-    type: "summary",
-    loRef: "MATH 1.2",
-    title: "Summary: multiply/divide standard form",
-    cloze: [
-      {
-        id: "summary-1",
-        sentence: (
-          <span data-testid="text-summary-sentence-1">
-            To multiply or divide numbers in standard form, first combine the <span className="font-semibold">_____</span>
-            , then use index laws on the powers of 10 by <span className="font-semibold">_____</span> indices for multiplication and
-            <span className="font-semibold">_____</span> indices for division, and finally adjust so that 1 ≤ a &lt; 10.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "sum-blank-1",
-            options: [
-              {
-                value: "coefficients",
-                label: "coefficients",
-                isCorrect: true,
-                feedback: "Yes—work with the a-values first.",
-              },
-              { value: "decimals", label: "decimals", isCorrect: false, feedback: "Close—but it’s the coefficients that multiply/divide." },
-              { value: "units", label: "units", isCorrect: false, feedback: "Units aren’t part of standard form here." },
-              { value: "roots", label: "roots", isCorrect: false, feedback: "Roots aren’t involved." },
-            ],
-          },
-          {
-            id: "sum-blank-2",
-            options: [
-              { value: "adding", label: "adding", isCorrect: true, feedback: "Correct: multiply → add indices." },
-              { value: "subtracting", label: "subtracting", isCorrect: false, feedback: "Hint: subtraction is for division." },
-              { value: "doubling", label: "doubling", isCorrect: false, feedback: "Not quite—use index laws." },
-              { value: "rounding", label: "rounding", isCorrect: false, feedback: "Rounding isn’t the method." },
-            ],
-          },
-          {
-            id: "sum-blank-3",
-            options: [
-              { value: "subtracting", label: "subtracting", isCorrect: true, feedback: "Correct: divide → subtract indices." },
-              { value: "adding", label: "adding", isCorrect: false, feedback: "Hint: adding is for multiplication." },
-              { value: "multiplying", label: "multiplying", isCorrect: false, feedback: "Don’t multiply indices." },
-              { value: "ignoring", label: "ignoring", isCorrect: false, feedback: "Indices matter!" },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s1-practice",
-    objectiveId: "lo-multiply-divide",
-    type: "practice",
-    loRef: "MATH 1.2",
-    title: "Practice question",
-    practice: {
-      prompt:
-        <span>Explain how you would calculate (7.5 × 10<sup>6</sup>) ÷ (3 × 10<sup>2</sup>) and write the final answer in standard form.</span>,
-      mustHaveKeywords: ["divide coefficients", "subtract indices", "standard form", "1 ≤ a < 10"],
-      optionalKeywords: ["7.5 ÷ 3", "10^(6−2)", "2.5 × 10^4"],
-      modelAnswer:
-        <span>Divide the coefficients: 7.5 ÷ 3 = 2.5. Subtract the indices for division: 10<sup>6</sup> ÷ 10<sup>2</sup> = 10<sup>6−2</sup> = 10<sup>4</sup>. Combine to get 2.5 × 10<sup>4</sup>, which is already in standard form because 1 ≤ 2.5 &lt; 10.</span>,
-      scaffoldPrompts: [
-        "What do you do with 7.5 and 3?",
-        "What happens to the powers of 10 when dividing?",
-        "Is your final coefficient between 1 and 10?",
-      ],
-      hint: "Make sure you mention what happens to the indices when dividing.",
-    },
-  },
-
-  // LO 2 — add/subtract (match powers)
-  {
-    id: "s2-concept",
-    objectiveId: "lo-add-subtract",
-    type: "concept",
-    loRef: "MATH 1.2",
-    title: "Add & subtract in standard form (match the powers first)",
-    explanation: (
-      <>
-        <p className="text-sm leading-6 text-muted-foreground" data-testid="text-expl-add-1">
-          You can only add or subtract the coefficients when the powers of 10 match. That’s because <span className="font-semibold">2 × 10<sup>5</sup></span>
-          and <span className="font-semibold">2 × 10<sup>6</sup></span> are different “units” of size (hundred-thousands vs millions).
-        </p>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground" data-testid="text-expl-add-2">
-          If the indices are different, convert one number so both have the same power of 10. Then add/subtract coefficients and adjust back into standard form.
-        </p>
-      </>
-    ),
-    analogy: {
-      title: "Analogy",
-      content: (
-        <p className="text-sm leading-6 text-muted-foreground" data-testid="text-analogy-add">
-          Like money: you can add £2 + £3 easily, but you can’t directly add £2 + 3p without converting so the “units” match.
-          Matching powers of 10 is the maths version of matching units.
-        </p>
-      ),
-    },
-    workedExample: {
-      title: "Worked example idea",
-      bullets: [
-        <span>(3.4 × 10<sup>5</sup>) + (7.2 × 10<sup>4</sup>)</span>,
-        <span>Convert 7.2 × 10<sup>4</sup> to ×10<sup>5</sup>: 0.72 × 10<sup>5</sup></span>,
-        "Add coefficients: 3.4 + 0.72 = 4.12",
-        <span>Answer: 4.12 × 10<sup>5</sup> (already standard form)</span>,
-      ],
-    },
-  },
-  {
-    id: "s2-mcq",
-    objectiveId: "lo-add-subtract",
-    type: "mcq",
-    loRef: "MATH 1.2",
-    title: "Knowledge check: matching powers",
-    mcqs: [
-      {
-        id: "mcq-2a",
-        question: <span>Which is a correct first step for (5.1×10<sup>6</sup>) + (3.0×10<sup>5</sup>)?</span>,
-        options: [
-          {
-            id: "a",
-            label: <span>Add coefficients immediately: 8.1×10<sup>11</sup></span>,
-            isCorrect: false,
-            explanation: "You can’t add until powers match; also the power is wrong.",
-          },
-          {
-            id: "b",
-            label: <span>Convert 3.0×10<sup>5</sup> to 0.30×10<sup>6</sup></span>,
-            isCorrect: true,
-            explanation: <span>Correct: make both powers 10<sup>6</sup> (or both 10<sup>5</sup>).</span>,
-          },
-          {
-            id: "c",
-            label: <span>Convert 5.1×10<sup>6</sup> to 51×10<sup>6</sup></span>,
-            isCorrect: false,
-            explanation: "That breaks the 1 ≤ a < 10 rule and doesn’t help matching powers.",
-          },
-          {
-            id: "d",
-            label: <span>Subtract indices: 10<sup>6−5</sup></span>,
-            isCorrect: false,
-            explanation: "Index subtraction is for division, not addition.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s2-terms",
-    objectiveId: "lo-add-subtract",
-    type: "terms",
-    loRef: "MATH 1.2",
-    title: "Key terminology: matching powers (dropdown cloze)",
-    cloze: [
-      {
-        id: "terms-2a",
-        sentence: (
-          <span data-testid="text-terms-sentence-2a">
-            To add numbers in standard form, the powers of 10 must be <span className="font-semibold">_____</span>.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "blank-2a",
-            options: [
-              { value: "the same", label: "the same", isCorrect: true, feedback: "Correct: match the indices first." },
-              { value: "bigger", label: "bigger", isCorrect: false, feedback: "Not bigger—just equal." },
-              { value: "prime", label: "prime", isCorrect: false, feedback: "Prime numbers aren’t relevant here." },
-              { value: "negative", label: "negative", isCorrect: false, feedback: "They can be, but they don’t have to be." },
-            ],
-          },
-        ],
-      },
-      {
-        id: "terms-2b",
-        sentence: (
-          <span data-testid="text-terms-sentence-2b">
-            Changing <span className="font-semibold">3.0 × 10<sup>5</sup></span> to <span className="font-semibold">0.30 × 10<sup>6</sup></span> keeps the value the same because you moved the decimal one place and changed the index by <span className="font-semibold">_____</span>.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "blank-2b",
-            options: [
-              { value: "+1", label: "+1", isCorrect: true, feedback: "Yes: index increases by 1 when decimal moves left." },
-              { value: "−1", label: "−1", isCorrect: false, feedback: <span>Hint: 10<sup>6</sup> is bigger than 10<sup>5</sup>, so the index went up.</span> },
-              { value: "+2", label: "+2", isCorrect: false, feedback: "Only one place moved." },
-              { value: "0", label: "0", isCorrect: false, feedback: "The index must change if the decimal moved." },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s2-summary",
-    objectiveId: "lo-add-subtract",
-    type: "summary",
-    loRef: "MATH 1.2",
-    title: "Summary: add/subtract standard form",
-    cloze: [
-      {
-        id: "summary-2",
-        sentence: (
-          <span data-testid="text-summary-sentence-2">
-            To add or subtract in standard form, first rewrite one number so both have the same <span className="font-semibold">_____</span>
-            (power of 10). Then combine the <span className="font-semibold">_____</span> and finish by adjusting the result into standard form.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "sum2-blank-1",
-            options: [
-              { value: "index", label: "index", isCorrect: true, feedback: "Correct: match the power of 10 (the index)." },
-              { value: "fraction", label: "fraction", isCorrect: false, feedback: "Fractions aren’t the focus here." },
-              { value: "unit", label: "unit", isCorrect: false, feedback: "It’s similar to units, but the word here is index/power." },
-              { value: "root", label: "root", isCorrect: false, feedback: "Roots aren’t involved." },
-            ],
-          },
-          {
-            id: "sum2-blank-2",
-            options: [
-              { value: "coefficients", label: "coefficients", isCorrect: true, feedback: "Yes: add/subtract the a-values." },
-              { value: "indices", label: "indices", isCorrect: false, feedback: "Indices must match, but you don’t add them for addition." },
-              { value: "denominators", label: "denominators", isCorrect: false, feedback: "No denominators here." },
-              { value: "angles", label: "angles", isCorrect: false, feedback: "Angles are unrelated." },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s2-practice",
-    objectiveId: "lo-add-subtract",
-    type: "practice",
-    loRef: "MATH 1.2",
-    title: "Practice question",
-    practice: {
-      prompt:
-        <span>Explain how you would calculate (4.8 × 10<sup>7</sup>) + (3.6 × 10<sup>6</sup>). Include the conversion step and the final answer in standard form.</span>,
-      mustHaveKeywords: ["same power", "convert", "add coefficients", "standard form"],
-      optionalKeywords: ["0.36 × 10^7", "4.8 + 0.36", "5.16 × 10^7"],
-      modelAnswer:
-        <span>Make the powers match by converting 3.6 × 10<sup>6</sup> to 0.36 × 10<sup>7</sup>. Then add coefficients: 4.8 + 0.36 = 5.16. Keep the power of 10 as 10<sup>7</sup>, giving 5.16 × 10<sup>7</sup>.</span>,
-      scaffoldPrompts: [
-        "Which number will you rewrite to match the power of 10?",
-        <span>What happens to the coefficient when you change 10<sup>6</sup> to 10<sup>7</sup>?</span>,
-        "After adding, is your coefficient between 1 and 10?",
-      ],
-      hint: "Make sure you mention matching the powers of 10 before adding.",
-    },
-  },
-
-  // LO 3 — convert to/from standard form
-  {
-    id: "s3-concept",
-    objectiveId: "lo-convert",
-    type: "concept",
-    loRef: "MATH 1.2",
-    title: "Convert between ordinary numbers and standard form",
-    explanation: (
-      <>
-        <p className="text-sm leading-6 text-muted-foreground" data-testid="text-expl-convert-1">
-          Standard form is useful for very large or very small numbers. The key skill is moving the decimal point to make the coefficient between 1 and 10.
-          Every time the decimal moves one place, the power of 10 changes by 1.
-        </p>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground" data-testid="text-expl-convert-2">
-          Moving the decimal <span className="font-semibold">left</span> makes the number smaller, so the index increases to compensate (for large numbers). Moving it <span className="font-semibold">right</span> makes the number bigger, so the index decreases (for small numbers).
-        </p>
-      </>
-    ),
-    analogy: {
-      title: "Analogy",
-      content: (
-        <p className="text-sm leading-6 text-muted-foreground" data-testid="text-analogy-convert">
-          It’s like zooming a map: when you zoom out (make the visible number smaller), you need a bigger scale factor to keep the real distance the same.
-        </p>
-      ),
-    },
-    workedExample: {
-      title: "Worked example idea",
-      bullets: [
-        "Convert 3,500,000 to standard form",
-        "Move decimal 6 places left: 3.5",
-        <span>So: 3.5 × 10<sup>6</sup></span>,
-        "Check quickly: 3.5 million matches 3,500,000",
-      ],
-    },
-  },
-  {
-    id: "s3-mcq",
-    objectiveId: "lo-convert",
-    type: "mcq",
-    loRef: "MATH 1.2",
-    title: "Knowledge check: conversion",
-    mcqs: [
-      {
-        id: "mcq-3a",
-        question: "Which is the standard form of 0.00072?",
-        options: [
-          { id: "a", label: <span>7.2 × 10<sup>−4</sup></span>, isCorrect: true, explanation: <span>Move the decimal 4 places right to get 7.2, so use 10<sup>−4</sup>.</span> },
-          { id: "b", label: <span>72 × 10<sup>−5</sup></span>, isCorrect: false, explanation: "Coefficient must be between 1 and 10." },
-          { id: "c", label: <span>0.72 × 10<sup>−3</sup></span>, isCorrect: false, explanation: "Coefficient must be at least 1." },
-          { id: "d", label: <span>7.2 × 10<sup>4</sup></span>, isCorrect: false, explanation: "The number is small, so the index should be negative." },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s3-terms",
-    objectiveId: "lo-convert",
-    type: "terms",
-    loRef: "MATH 1.2",
-    title: "Key terminology: moving the decimal (dropdown cloze)",
-    cloze: [
-      {
-        id: "terms-3a",
-        sentence: (
-          <span data-testid="text-terms-sentence-3a">
-            If you move the decimal point left to make the coefficient between 1 and 10, the index generally becomes more <span className="font-semibold">_____</span>.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "blank-3a",
-            options: [
-              { value: "positive", label: "positive", isCorrect: true, feedback: "Correct: large numbers usually have positive indices." },
-              { value: "negative", label: "negative", isCorrect: false, feedback: "Negative indices are typical for small numbers." },
-              { value: "prime", label: "prime", isCorrect: false, feedback: "Prime isn’t relevant." },
-              { value: "zero", label: "zero", isCorrect: false, feedback: "Sometimes, but not generally." },
-            ],
-          },
-        ],
-      },
-      {
-        id: "terms-3b",
-        sentence: (
-          <span data-testid="text-terms-sentence-3b">
-            For small numbers like 0.00072, the index is usually <span className="font-semibold">_____</span>.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "blank-3b",
-            options: [
-              { value: "negative", label: "negative", isCorrect: true, feedback: "Correct: small numbers use negative powers." },
-              { value: "positive", label: "positive", isCorrect: false, feedback: "Hint: positive powers make numbers bigger." },
-              { value: "fractional", label: "fractional", isCorrect: false, feedback: "The index is an integer." },
-              { value: "random", label: "random", isCorrect: false, feedback: "It follows the decimal shift." },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s3-summary",
-    objectiveId: "lo-convert",
-    type: "summary",
-    loRef: "MATH 1.2",
-    title: "Summary: conversion",
-    cloze: [
-      {
-        id: "summary-3",
-        sentence: (
-          <span data-testid="text-summary-sentence-3">
-            To write a number in standard form, move the decimal so the coefficient is between <span className="font-semibold">_____</span>
-            and <span className="font-semibold">_____</span>. The number of places you move the decimal tells you the <span className="font-semibold">_____</span>
-            , and small numbers use <span className="font-semibold">_____</span> indices.
-          </span>
-        ),
-        blanks: [
-          {
-            id: "sum3-blank-1",
-            options: [
-              { value: "1", label: "1", isCorrect: true, feedback: "Yes: coefficient must be at least 1." },
-              { value: "0", label: "0", isCorrect: false, feedback: "Coefficient can’t be 0." },
-              { value: "10", label: "10", isCorrect: false, feedback: "10 is the upper bound." },
-              { value: "100", label: "100", isCorrect: false, feedback: "Too large." },
-            ],
-          },
-          {
-            id: "sum3-blank-2",
-            options: [
-              { value: "10", label: "10", isCorrect: true, feedback: "Yes: coefficient must be less than 10." },
-              { value: "1", label: "1", isCorrect: false, feedback: "That would force coefficient = 1 only." },
-              { value: "0", label: "0", isCorrect: false, feedback: "Not possible." },
-              { value: "1000", label: "1000", isCorrect: false, feedback: "Too large." },
-            ],
-          },
-          {
-            id: "sum3-blank-3",
-            options: [
-              { value: "index", label: "index", isCorrect: true, feedback: "Correct: decimal moves decide the index." },
-              { value: "angle", label: "angle", isCorrect: false, feedback: "Angles aren’t involved." },
-              { value: "denominator", label: "denominator", isCorrect: false, feedback: "No denominators." },
-              { value: "gradient", label: "gradient", isCorrect: false, feedback: "Not relevant." },
-            ],
-          },
-          {
-            id: "sum3-blank-4",
-            options: [
-              { value: "negative", label: "negative", isCorrect: true, feedback: "Correct: small numbers use negative powers." },
-              { value: "positive", label: "positive", isCorrect: false, feedback: "Hint: positive powers make numbers bigger." },
-              { value: "fractional", label: "fractional", isCorrect: false, feedback: "The index is an integer." },
-              { value: "odd", label: "odd", isCorrect: false, feedback: "Odd/even doesn’t matter." },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "s3-practice",
-    objectiveId: "lo-convert",
-    type: "practice",
-    loRef: "MATH 1.2",
-    title: "Practice question",
-    practice: {
-      prompt:
-        "Convert 9,300,000,000 into standard form and explain how you know the index is correct. Mention how a calculator can help you check.",
-      mustHaveKeywords: ["decimal", "places", "index", "standard form", "calculator"],
-      optionalKeywords: ["9.3 × 10^9", "move decimal 9 places", "check by multiplying"],
-      modelAnswer:
-        <span>9,300,000,000 = 9.3 × 10<sup>9</sup> because moving the decimal 9 places left turns 9,300,000,000 into 9.3, so the index is 9. You can check with a calculator by entering 9.3E9 (or 9.3 × 10<sup>9</sup>) and confirming it displays 9,300,000,000.</span>,
-      scaffoldPrompts: [
-        "Where should the decimal go to make a between 1 and 10?",
-        "How many places did you move it?",
-        "How would you check using E-notation on a calculator?",
-      ],
-      hint: "Mention counting decimal moves to get the index.",
-    },
-  },
-];
+const HtmlContent = ({ content }: { content: string | React.ReactNode }) => {
+  if (typeof content !== 'string') return <>{content}</>;
+  return <span dangerouslySetInnerHTML={{ __html: content }} />;
+};
 
 type AttemptState = {
   practiceAttempts: Record<string, number>;
@@ -988,7 +411,7 @@ function McqBlock({
   return (
     <div className="mt-4" data-testid={`mcq-${mcqId}`}>
       <div className="text-sm font-semibold" data-testid={`text-mcq-question-${mcqId}`} id={`step-${stepIndex + 1}-mcq-${mcqId}-question`}>
-        {question}
+        {typeof question === 'string' ? <HtmlContent content={question} /> : question}
       </div>
       <div className="mt-3 grid gap-2">
         {options.map((o) => {
@@ -1014,7 +437,7 @@ function McqBlock({
             >
               <div className="flex items-center justify-between gap-3">
                 <span className={cn(correctSelected && "text-[hsl(142_60%_28%)]", wrongSelected && "text-foreground")} id={`step-${stepIndex + 1}-mcq-${mcqId}-option-${o.id}`}>
-                  {o.label}
+                  {typeof o.label === 'string' ? <HtmlContent content={o.label} /> : o.label}
                 </span>
                 {correctSelected ? (
                   <CheckCircle2 className="h-4 w-4 text-[hsl(142_71%_45%)]" />
@@ -1028,7 +451,7 @@ function McqBlock({
       </div>
 
       {state?.feedback ? (
-        <FeedbackPill tone={isCorrect ? "success" : "hint"}>{state.feedback}</FeedbackPill>
+        <FeedbackPill tone={isCorrect ? "success" : "hint"}>{typeof state.feedback === 'string' ? <HtmlContent content={state.feedback} /> : state.feedback}</FeedbackPill>
       ) : null}
     </div>
   );
@@ -1059,7 +482,7 @@ function ClozeLine({
   return (
     <div className="mt-4" data-testid={`cloze-${clozeId}`}>
       <div className="text-sm leading-6 text-foreground" data-testid={`text-cloze-sentence-${clozeId}`} id={`step-${stepIndex + 1}-cloze-${clozeId}-sentence`}>
-        {sentence}
+        {typeof sentence === 'string' ? <HtmlContent content={sentence} /> : sentence}
       </div>
       <div className="mt-3 grid gap-2">
         {blanks.map((b, idx) => {
@@ -1111,14 +534,14 @@ function ClozeLine({
                       value={o.value}
                       data-testid={`select-item-${clozeId}-${b.id}-${o.value}`}
                     >
-                      {o.label}
+                      {typeof o.label === 'string' ? <HtmlContent content={o.label} /> : o.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
               {selection?.feedback ? (
-                <FeedbackPill tone={isCorrect ? "success" : "hint"}>{selection.feedback}</FeedbackPill>
+                <FeedbackPill tone={isCorrect ? "success" : "hint"}>{typeof selection.feedback === 'string' ? <HtmlContent content={selection.feedback} /> : selection.feedback}</FeedbackPill>
               ) : null}
             </div>
           );
@@ -1158,7 +581,7 @@ function PracticeBlock({
   return (
     <div className="mt-4" data-testid={`practice-${stepId}`}>
       <div className="text-sm leading-6 text-muted-foreground" data-testid={`text-practice-prompt-${stepId}`} id={`step-${stepIndex + 1}-practice-prompt`}>
-        {practice.prompt}
+        {typeof practice.prompt === 'string' ? <HtmlContent content={practice.prompt} /> : practice.prompt}
       </div>
 
       <div className="mt-3">
@@ -1199,7 +622,7 @@ function PracticeBlock({
           >
             {status}
           </Badge>
-          {feedback ? <FeedbackPill tone={status === "Complete" ? "success" : "hint"}>{feedback}</FeedbackPill> : null}
+          {feedback ? <FeedbackPill tone={status === "Complete" ? "success" : "hint"}>{typeof feedback === 'string' ? <HtmlContent content={feedback} /> : feedback}</FeedbackPill> : null}
 
           {showScaffold ? (
             <div className="mt-3 rounded-xl border border-border bg-secondary p-3" data-testid={`panel-scaffold-${stepId}`}>
@@ -1208,7 +631,7 @@ function PracticeBlock({
               </div>
               <ul className="mt-2 list-disc pl-5 text-sm text-muted-foreground">
                 {practice.scaffoldPrompts.map((p, i) => (
-                  <li key={i} data-testid={`text-scaffold-${stepId}-${i}`}> {p}</li>
+                  <li key={i} data-testid={`text-scaffold-${stepId}-${i}`}> {typeof p === 'string' ? <HtmlContent content={p} /> : p}</li>
                 ))}
               </ul>
             </div>
@@ -1220,7 +643,7 @@ function PracticeBlock({
                 Model answer (unlocked)
               </div>
               <div className="mt-2 text-sm leading-6 text-muted-foreground" data-testid={`text-model-answer-${stepId}`}>
-                {practice.modelAnswer}
+                {typeof practice.modelAnswer === 'string' ? <HtmlContent content={practice.modelAnswer} /> : practice.modelAnswer}
               </div>
             </div>
           ) : null}
@@ -1442,123 +865,154 @@ export default function MathsGuideStandardForm() {
   const [showModel, setShowModel] = React.useState<Record<string, boolean>>({});
   const [whiteboardOpen, setWhiteboardOpen] = React.useState(false);
   const [quickNotesOpen, setQuickNotesOpen] = React.useState(false);
-  const [steps, setSteps] = React.useState<Step[]>(INITIAL_STEPS);
+  const [steps, setSteps] = React.useState<Step[]>([]);
+  const [appData, setAppData] = React.useState({
+    subject: "Loading...",
+    specCode: "...",
+    topicTitle: "Loading Lesson...",
+    strapline: "Please wait while content loads",
+    learningObjectives: [] as string[]
+  });
 
   React.useEffect(() => {
-    // Check for window.lessonContent and hydrate if available
-    // This allows external scripts (like n8n) to override content
-    const checkForContent = () => {
-      // @ts-ignore
-      const externalContent = window.lessonContent;
-      if (externalContent) {
-        setSteps((prevSteps) => {
-          return prevSteps.map((step, idx) => {
-            // Map flat step1, step2 structure to our typed steps
-            const externalStep = externalContent[`step${idx + 1}`];
-            if (!externalStep) return step;
+    const loadContent = () => {
+      const data = window.lessonContent;
+      if (!data) return;
 
-            // Deep merge logic would go here, for now we override title and explanation
-            // If the external content has 'mcqs', we'd map those too if the structure matches
-            const newStep = {
-              ...step,
-              title: externalStep.title || step.title,
-              explanation: externalStep.explanation ? <div dangerouslySetInnerHTML={{ __html: externalStep.explanation }} /> : step.explanation,
-            };
+      setAppData({
+        subject: data.subject || "Subject",
+        specCode: data.specCode || "Spec",
+        topicTitle: data.topicTitle || "Topic",
+        strapline: data.strapline || "Strapline",
+        learningObjectives: data.learningObjectives || []
+      });
 
-            if (externalStep.analogy) {
-              newStep.analogy = {
-                title: externalStep.analogy.title,
-                content: <div dangerouslySetInnerHTML={{ __html: externalStep.analogy.content }} />
-              };
-            }
+      const loadedSteps: Step[] = [];
+      const stepsCount = 20; // Look for up to 20 steps
 
-            if (externalStep.workedExample) {
-              newStep.workedExample = {
-                title: externalStep.workedExample.title,
-                bullets: externalStep.workedExample.bullets.map((b: string) => <div dangerouslySetInnerHTML={{ __html: b }} />)
-              };
-            }
+      for (let i = 1; i <= stepsCount; i++) {
+        const stepData = data[`step${i}`];
+        if (!stepData) continue;
 
-            if (externalStep.mcqs) {
-              newStep.mcqs = externalStep.mcqs.map((q: any) => ({
-                id: q.id,
-                question: <div dangerouslySetInnerHTML={{ __html: q.question }} />,
-                options: q.options.map((o: any) => ({
-                  id: o.id,
-                  label: <div dangerouslySetInnerHTML={{ __html: o.label }} />,
-                  isCorrect: o.isCorrect ?? false, // Default to false if missing
-                  explanation: o.explanation ?? ""
-                }))
-              }));
-            }
+        const id = `s${i}`;
+        // Infer type
+        let type: StepType = "concept";
+        if (stepData.mcqs) type = "mcq";
+        else if (stepData.practice) type = "practice";
+        else if (stepData.cloze) {
+           if (stepData.title && stepData.title.toLowerCase().includes("summary")) type = "summary";
+           else type = "terms";
+        }
 
-            if (externalStep.cloze) {
-              newStep.cloze = externalStep.cloze.map((c: any) => ({
-                id: c.id,
-                sentence: <div dangerouslySetInnerHTML={{ __html: c.sentence }} />,
-                blanks: c.blanks ? c.blanks.map((b: any) => ({
-                  id: b.id,
-                  options: b.options.map((o: any) => ({
-                    value: o.value,
-                    label: o.label,
-                    isCorrect: o.isCorrect ?? false,
-                    feedback: o.feedback ?? ""
-                  }))
-                })) : []
-              }));
-            }
+        // Infer objective ID (simple distribution or just generic)
+        // Since we don't have explicit LO mapping in data, we can try to guess or just use generic IDs
+        // The original code had 3 LOs.
+        // Let's create virtual LOs based on the data.learningObjectives array
+        const loIndex = Math.floor(((i - 1) / stepsCount) * (data.learningObjectives?.length || 1));
+        const objectiveId = `lo-${loIndex}`;
 
-            if (externalStep.practice) {
-              newStep.practice = {
-                ...step.practice!, // Keep existing defaults if missing
-                prompt: <div dangerouslySetInnerHTML={{ __html: externalStep.practice.prompt }} />,
-                mustHaveKeywords: externalStep.practice.mustHaveKeywords || step.practice!.mustHaveKeywords,
-                optionalKeywords: externalStep.practice.optionalKeywords || step.practice!.optionalKeywords,
-                modelAnswer: externalStep.practice.modelAnswer ? <div dangerouslySetInnerHTML={{ __html: externalStep.practice.modelAnswer }} /> : step.practice!.modelAnswer,
-                hint: externalStep.practice.hint || step.practice!.hint,
-              };
-            }
-
-            return newStep;
-          });
+        loadedSteps.push({
+          id,
+          objectiveId,
+          type,
+          loRef: data.specCode || "Ref",
+          title: stepData.title || `Step ${i}`,
+          explanation: stepData.explanation ? <HtmlContent content={stepData.explanation} /> : undefined,
+          analogy: stepData.analogy ? {
+            title: stepData.analogy.title,
+            content: <HtmlContent content={stepData.analogy.content} />
+          } : undefined,
+          workedExample: stepData.workedExample ? {
+            title: stepData.workedExample.title,
+            bullets: (stepData.workedExample.bullets || []).map((b: string) => <HtmlContent content={b} />)
+          } : undefined,
+          mcqs: stepData.mcqs?.map((m: any) => ({
+            id: m.id,
+            question: <HtmlContent content={m.question} />,
+            options: m.options.map((o: any) => ({
+              id: o.id,
+              label: <HtmlContent content={o.label} />,
+              isCorrect: o.isCorrect,
+              explanation: <HtmlContent content={o.explanation || (o.isCorrect ? "Correct!" : "Try again.")} />
+            }))
+          })),
+          cloze: stepData.cloze?.map((c: any) => ({
+            id: c.id,
+            sentence: <HtmlContent content={c.sentence} />,
+            blanks: c.blanks.map((b: any) => ({
+              id: b.id,
+              options: b.options.map((o: any) => ({
+                value: o.value,
+                label: <HtmlContent content={o.label} />,
+                isCorrect: o.isCorrect,
+                feedback: <HtmlContent content={o.feedback || ""} />
+              }))
+            }))
+          })),
+          practice: stepData.practice ? {
+            prompt: <HtmlContent content={stepData.practice.prompt} />,
+            mustHaveKeywords: stepData.practice.mustHaveKeywords || [],
+            optionalKeywords: stepData.practice.optionalKeywords || [],
+            modelAnswer: <HtmlContent content={stepData.practice.modelAnswer} />,
+            scaffoldPrompts: (stepData.practice.scaffoldPrompts || []).map((p: string) => <HtmlContent content={p} />),
+            hint: <HtmlContent content={stepData.practice.hint || "Check your answer."} />
+          } : undefined
         });
       }
+
+      if (loadedSteps.length > 0) {
+        setSteps(loadedSteps);
+      }
     };
+
+    loadContent();
+    // Safety check in case script loads late
+    const interval = setInterval(loadContent, 200);
+    // Stop polling after 2 seconds
+    const timeout = setTimeout(() => clearInterval(interval), 2000);
     
-    // Check immediately and also set up a listener/poller if needed
-    checkForContent();
-    
-    // Simple poller in case the script loads late
-    const interval = setInterval(checkForContent, 500);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   }, []);
 
   const totalSteps = steps.length;
   const currentStep = steps[activeStep];
 
-  const isStepComplete = (stepIndex: number) => completed[steps[stepIndex]?.id] === true;
+  const isStepComplete = (stepIndex: number) => {
+    if (!steps[stepIndex]) return false;
+    return completed[steps[stepIndex].id] === true;
+  }
   const isLocked = (stepIndex: number) => stepIndex > 0 && !isStepComplete(stepIndex - 1);
   const isActive = (stepIndex: number) => stepIndex === activeStep;
 
-  const currentObjectiveIndex = learningObjectives.findIndex((o) => o.id === currentStep.objectiveId);
-  const objectiveCompletion = learningObjectives.map((lo) => {
+  // Virtual learning objectives mapping
+  const learningObjectivesList = appData.learningObjectives.map((lo, idx) => ({
+    id: `lo-${idx}`,
+    label: lo,
+    shortRef: appData.specCode
+  }));
+
+  const objectiveCompletion = learningObjectivesList.map((lo) => {
     const loSteps = steps.filter((s) => s.objectiveId === lo.id).map((s) => s.id);
-    const done = loSteps.every((sid) => completed[sid]);
+    const done = loSteps.length > 0 && loSteps.every((sid) => completed[sid]);
     return { loId: lo.id, done };
   });
 
   const diagramStage = React.useMemo(() => {
     // Simple mapping: completed steps contribute; active step contributes a half stage
+    // We assume about 15 steps max for the diagram stages
     const doneCount = steps.filter((s) => completed[s.id]).length;
     return doneCount + (isStepComplete(activeStep) ? 0 : 0);
-  }, [completed, activeStep]);
+  }, [completed, activeStep, steps]);
 
   const markCompleteAndAdvance = React.useCallback(
     (stepId: string) => {
       setCompleted((p) => ({ ...p, [stepId]: true }));
       setActiveStep((i) => clamp(i + 1, 0, steps.length - 1));
     },
-    [setCompleted, setActiveStep],
+    [setCompleted, setActiveStep, steps.length],
   );
 
   const completeStepOnly = React.useCallback((stepId: string) => {
@@ -1566,6 +1020,7 @@ export default function MathsGuideStandardForm() {
   }, []);
 
   const canContinue = React.useMemo(() => {
+    if (!currentStep) return false;
     const step = currentStep;
     if (completed[step.id]) return true;
 
@@ -1593,6 +1048,7 @@ export default function MathsGuideStandardForm() {
   }, [currentStep, completed, mcqState, clozeState, practiceEval]);
 
   const onContinue = () => {
+    if (!currentStep) return;
     if (!canContinue) return;
     if (!completed[currentStep.id]) {
       completeStepOnly(currentStep.id);
@@ -1601,6 +1057,7 @@ export default function MathsGuideStandardForm() {
   };
 
   const onPickMcq = (mcqId: string, optionId: string) => {
+    if (!currentStep) return;
     const step = currentStep;
     const q = step.mcqs?.find((m) => m.id === mcqId);
     if (!q) return;
@@ -1612,12 +1069,13 @@ export default function MathsGuideStandardForm() {
       [mcqId]: {
         selectedId: optionId,
         isCorrect: opt.isCorrect,
-        feedback: opt.isCorrect ? opt.explanation : `Hint: ${opt.explanation}`,
+        feedback: opt.isCorrect ? (typeof opt.explanation === 'string' ? <HtmlContent content={opt.explanation} /> : opt.explanation) : (opt.explanation ? (typeof opt.explanation === 'string' ? <HtmlContent content={opt.explanation} /> : opt.explanation) : `Hint: Try again`),
       },
     }));
   };
 
   const onSelectCloze = (lineId: string, blankId: string, value: string) => {
+    if (!currentStep) return;
     const step = currentStep;
     const line = step.cloze?.find((c) => c.id === lineId);
     const blank = line?.blanks.find((b) => b.id === blankId);
@@ -1632,7 +1090,7 @@ export default function MathsGuideStandardForm() {
           [blankId]: {
             value,
             isCorrect: option.isCorrect,
-            feedback: option.isCorrect ? option.feedback : `Hint: ${option.feedback}`,
+            feedback: option.isCorrect ? (typeof option.feedback === 'string' ? <HtmlContent content={option.feedback} /> : option.feedback) : (option.feedback ? (typeof option.feedback === 'string' ? <HtmlContent content={option.feedback} /> : option.feedback) : `Hint: Incorrect`),
           },
         },
       },
@@ -1681,7 +1139,18 @@ export default function MathsGuideStandardForm() {
     }
   };
 
-  const leftSubtitle = "Multiply/divide, add/subtract, and convert confidently.";
+  if (steps.length === 0) {
+      return (
+          <div className="flex h-screen w-full items-center justify-center bg-background text-foreground">
+              <div className="flex flex-col items-center gap-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  <p>Loading lesson content...</p>
+              </div>
+          </div>
+      );
+  }
+
+  const leftSubtitle = appData.strapline;
 
   return (
     <div className="min-h-screen bg-background" data-testid="page-maths-guide">
@@ -1702,15 +1171,15 @@ export default function MathsGuideStandardForm() {
                 </div>
                 <div className="mt-2 flex items-center gap-2">
                   <Badge className="bg-primary text-primary-foreground" data-testid="badge-subject">
-                    {SUBJECT}
+                    {appData.subject}
                   </Badge>
                   <div className="text-xs text-muted-foreground" data-testid="text-spec-ref" id="spec-code">
-                    Spec {SPEC_REF}
+                    Spec {appData.specCode}
                   </div>
                 </div>
                 <div className="mt-3">
                   <div className="text-2xl font-semibold leading-tight" style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }} data-testid="text-topic-title" id="topic-title">
-                    {TOPIC}
+                    {appData.topicTitle}
                   </div>
                   <div className="mt-1 line-clamp-1 text-sm text-muted-foreground" data-testid="text-topic-subtitle" id="strapline">
                     {leftSubtitle}
@@ -1737,7 +1206,7 @@ export default function MathsGuideStandardForm() {
                   LEARNING OBJECTIVES
                 </div>
                 <div className="grid gap-2" id="learning-objectives">
-                  {learningObjectives.map((lo, idx) => {
+                  {learningObjectivesList.map((lo, idx) => {
                     const done = objectiveCompletion.find((x) => x.loId === lo.id)?.done;
                     return (
                       <div
@@ -1841,16 +1310,16 @@ export default function MathsGuideStandardForm() {
                   style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }}
                   data-testid="text-app-name"
                 >
-                  <span className="gradient-title">{APP_NAME}</span>
+                  <span className="gradient-title">{appData.topicTitle}</span>
                 </div>
                 <div className="mt-1 text-sm text-muted-foreground" data-testid="text-right-instructions">
                   Complete each step to unlock the next.
                 </div>
 
                 <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground" data-testid="breadcrumb">
-                  <span data-testid="breadcrumb-subject">{SUBJECT}</span>
+                  <span data-testid="breadcrumb-subject">{appData.subject}</span>
                   <span aria-hidden>•</span>
-                  <span data-testid="breadcrumb-topic">{TOPIC}</span>
+                  <span data-testid="breadcrumb-topic">{appData.topicTitle}</span>
                 </div>
               </div>
 

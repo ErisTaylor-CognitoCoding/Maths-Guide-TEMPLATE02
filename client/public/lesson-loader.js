@@ -55,11 +55,33 @@ window.lessonContent = {
     cloze: [
       {
         id: "terms-1a",
-        sentence: `<span>When multiplying powers of 10, you <span class="font-semibold">_____</span> the indices.</span>`
+        sentence: `<span>When multiplying powers of 10, you <span class="font-semibold">_____</span> the indices.</span>`,
+        blanks: [
+          {
+            id: "blank-1a",
+            options: [
+              { value: "add", label: "add", isCorrect: true, feedback: "Correct: multiply → add indices." },
+              { value: "subtract", label: "subtract", isCorrect: false, feedback: "Hint: subtraction is for division." },
+              { value: "multiply", label: "multiply", isCorrect: false, feedback: "No—don’t multiply indices." },
+              { value: "ignore", label: "ignore", isCorrect: false, feedback: "Indices matter: they tell you the power of 10." }
+            ]
+          }
+        ]
       },
       {
         id: "terms-1b",
-        sentence: `<span>When dividing powers of 10, you <span class="font-semibold">_____</span> the indices.</span>`
+        sentence: `<span>When dividing powers of 10, you <span class="font-semibold">_____</span> the indices.</span>`,
+        blanks: [
+          {
+            id: "blank-1b",
+            options: [
+              { value: "subtract", label: "subtract", isCorrect: true, feedback: "Correct: divide → subtract indices." },
+              { value: "add", label: "add", isCorrect: false, feedback: "Hint: adding is for multiplication." },
+              { value: "square", label: "square", isCorrect: false, feedback: "Squaring isn’t part of the index laws here." },
+              { value: "swap", label: "swap", isCorrect: false, feedback: "No swapping needed—just subtract." }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -68,14 +90,52 @@ window.lessonContent = {
     cloze: [
       {
         id: "summary-1",
-        sentence: `<span>To multiply or divide numbers in standard form, first combine the <span class="font-semibold">_____</span>, then use index laws on the powers of 10 by <span class="font-semibold">_____</span> indices for multiplication and <span class="font-semibold">_____</span> indices for division, and finally adjust so that 1 ≤ a < 10.</span>`
+        sentence: `<span>To multiply or divide numbers in standard form, first combine the <span class="font-semibold">_____</span>, then use index laws on the powers of 10 by <span class="font-semibold">_____</span> indices for multiplication and <span class="font-semibold">_____</span> indices for division, and finally adjust so that 1 ≤ a < 10.</span>`,
+        blanks: [
+          {
+            id: "sum-blank-1",
+            options: [
+              { value: "coefficients", label: "coefficients", isCorrect: true, feedback: "Yes—work with the a-values first." },
+              { value: "decimals", label: "decimals", isCorrect: false, feedback: "Close—but it’s the coefficients that multiply/divide." },
+              { value: "units", label: "units", isCorrect: false, feedback: "Units aren’t part of standard form here." },
+              { value: "roots", label: "roots", isCorrect: false, feedback: "Roots aren’t involved." }
+            ]
+          },
+          {
+            id: "sum-blank-2",
+            options: [
+              { value: "adding", label: "adding", isCorrect: true, feedback: "Correct: multiply → add indices." },
+              { value: "subtracting", label: "subtracting", isCorrect: false, feedback: "Hint: subtraction is for division." },
+              { value: "doubling", label: "doubling", isCorrect: false, feedback: "Not quite—use index laws." },
+              { value: "rounding", label: "rounding", isCorrect: false, feedback: "Rounding isn’t the method." }
+            ]
+          },
+          {
+            id: "sum-blank-3",
+            options: [
+              { value: "subtracting", label: "subtracting", isCorrect: true, feedback: "Correct: divide → subtract indices." },
+              { value: "adding", label: "adding", isCorrect: false, feedback: "Hint: adding is for multiplication." },
+              { value: "multiplying", label: "multiplying", isCorrect: false, feedback: "Don’t multiply indices." },
+              { value: "ignoring", label: "ignoring", isCorrect: false, feedback: "Indices matter!" }
+            ]
+          }
+        ]
       }
     ]
   },
   step5: {
     title: "Practice question",
     practice: {
-      prompt: `<span>Explain how you would calculate (7.5 × 10<sup>6</sup>) ÷ (3 × 10<sup>2</sup>) and write the final answer in standard form.</span>`
+      prompt: `<span>Explain how you would calculate (7.5 × 10<sup>6</sup>) ÷ (3 × 10<sup>2</sup>) and write the final answer in standard form.</span>`,
+      mustHaveKeywords: ["divide coefficients", "subtract indices", "standard form", "1 ≤ a < 10"],
+      optionalKeywords: ["7.5 ÷ 3", "10^(6−2)", "2.5 × 10^4"],
+      modelAnswer: `<span>Divide the coefficients: 7.5 ÷ 3 = 2.5. Subtract the indices for division: 10<sup>6</sup> ÷ 10<sup>2</sup> = 10<sup>6−2</sup> = 10<sup>4</sup>. Combine to get 2.5 × 10<sup>4</sup>, which is already in standard form because 1 ≤ 2.5 < 10.</span>`,
+      scaffoldPrompts: [
+        "What do you do with 7.5 and 3?",
+        "What happens to the powers of 10 when dividing?",
+        "Is your final coefficient between 1 and 10?"
+      ],
+      hint: "Make sure you mention what happens to the indices when dividing."
     }
   },
   step6: {
@@ -115,11 +175,33 @@ window.lessonContent = {
     cloze: [
       {
         id: "terms-2a",
-        sentence: `<span>To add numbers in standard form, the powers of 10 must be <span class="font-semibold">_____</span>.</span>`
+        sentence: `<span>To add numbers in standard form, the powers of 10 must be <span class="font-semibold">_____</span>.</span>`,
+        blanks: [
+          {
+            id: "blank-2a",
+            options: [
+              { value: "the same", label: "the same", isCorrect: true, feedback: "Correct: match the indices first." },
+              { value: "bigger", label: "bigger", isCorrect: false, feedback: "Not bigger—just equal." },
+              { value: "prime", label: "prime", isCorrect: false, feedback: "Prime numbers aren’t relevant here." },
+              { value: "negative", label: "negative", isCorrect: false, feedback: "They can be, but they don’t have to be." }
+            ]
+          }
+        ]
       },
       {
         id: "terms-2b",
-        sentence: `<span>Changing <span class="font-semibold">3.0 × 10<sup>5</sup></span> to <span class="font-semibold">0.30 × 10<sup>6</sup></span> keeps the value the same because you moved the decimal one place and changed the index by <span class="font-semibold">_____</span>.</span>`
+        sentence: `<span>Changing <span class="font-semibold">3.0 × 10<sup>5</sup></span> to <span class="font-semibold">0.30 × 10<sup>6</sup></span> keeps the value the same because you moved the decimal one place and changed the index by <span class="font-semibold">_____</span>.</span>`,
+        blanks: [
+          {
+            id: "blank-2b",
+            options: [
+              { value: "+1", label: "+1", isCorrect: true, feedback: "Yes: index increases by 1 when decimal moves left." },
+              { value: "−1", label: "−1", isCorrect: false, feedback: `Hint: 10<sup>6</sup> is bigger than 10<sup>5</sup>, so the index went up.` },
+              { value: "+2", label: "+2", isCorrect: false, feedback: "Only one place moved." },
+              { value: "0", label: "0", isCorrect: false, feedback: "The index must change if the decimal moved." }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -128,14 +210,43 @@ window.lessonContent = {
     cloze: [
       {
         id: "summary-2",
-        sentence: `<span>To add or subtract in standard form, first rewrite one number so both have the same <span class="font-semibold">_____</span> (power of 10). Then combine the <span class="font-semibold">_____</span> and finish by adjusting the result into standard form.</span>`
+        sentence: `<span>To add or subtract in standard form, first rewrite one number so both have the same <span class="font-semibold">_____</span> (power of 10). Then combine the <span class="font-semibold">_____</span> and finish by adjusting the result into standard form.</span>`,
+        blanks: [
+          {
+            id: "sum2-blank-1",
+            options: [
+              { value: "index", label: "index", isCorrect: true, feedback: "Correct: match the power of 10 (the index)." },
+              { value: "fraction", label: "fraction", isCorrect: false, feedback: "Fractions aren’t the focus here." },
+              { value: "unit", label: "unit", isCorrect: false, feedback: "It’s similar to units, but the word here is index/power." },
+              { value: "root", label: "root", isCorrect: false, feedback: "Roots aren’t involved." }
+            ]
+          },
+          {
+            id: "sum2-blank-2",
+            options: [
+              { value: "coefficients", label: "coefficients", isCorrect: true, feedback: "Yes: add/subtract the a-values." },
+              { value: "indices", label: "indices", isCorrect: false, feedback: "Indices must match, but you don’t add them for addition." },
+              { value: "denominators", label: "denominators", isCorrect: false, feedback: "No denominators here." },
+              { value: "angles", label: "angles", isCorrect: false, feedback: "Angles are unrelated." }
+            ]
+          }
+        ]
       }
     ]
   },
   step10: {
     title: "Practice question",
     practice: {
-      prompt: `<span>Explain how you would calculate (4.8 × 10<sup>7</sup>) + (3.6 × 10<sup>6</sup>). Include the conversion step and the final answer in standard form.</span>`
+      prompt: `<span>Explain how you would calculate (4.8 × 10<sup>7</sup>) + (3.6 × 10<sup>6</sup>). Include the conversion step and the final answer in standard form.</span>`,
+      mustHaveKeywords: ["same power", "convert", "add coefficients", "standard form"],
+      optionalKeywords: ["0.36 × 10^7", "4.8 + 0.36", "5.16 × 10^7"],
+      modelAnswer: `<span>Make the powers match by converting 3.6 × 10<sup>6</sup> to 0.36 × 10<sup>7</sup>. Then add coefficients: 4.8 + 0.36 = 5.16. Keep the power of 10 as 10<sup>7</sup>, giving 5.16 × 10<sup>7</sup>.</span>`,
+      scaffoldPrompts: [
+        "Which number will you rewrite to match the power of 10?",
+        `<span>What happens to the coefficient when you change 10<sup>6</sup> to 10<sup>7</sup>?</span>`,
+        "After adding, is your coefficient between 1 and 10?"
+      ],
+      hint: "Make sure you mention matching the powers of 10 before adding."
     }
   },
   step11: {
@@ -175,11 +286,33 @@ window.lessonContent = {
     cloze: [
       {
         id: "terms-3a",
-        sentence: `<span>If you move the decimal point left to make the coefficient between 1 and 10, the index generally becomes more <span class="font-semibold">_____</span>.</span>`
+        sentence: `<span>If you move the decimal point left to make the coefficient between 1 and 10, the index generally becomes more <span class="font-semibold">_____</span>.</span>`,
+        blanks: [
+           {
+            id: "blank-3a",
+            options: [
+              { value: "positive", label: "positive", isCorrect: true, feedback: "Yes: left move → larger index." },
+              { value: "negative", label: "negative", isCorrect: false, feedback: "Opposite direction." },
+              { value: "random", label: "random", isCorrect: false, feedback: "Not random." },
+              { value: "zero", label: "zero", isCorrect: false, feedback: "No." }
+            ]
+          }
+        ]
       },
       {
         id: "terms-3b",
-        sentence: `<span>If you move the decimal point right (for a small number like 0.005), the index becomes <span class="font-semibold">_____</span>.</span>`
+        sentence: `<span>If you move the decimal point right (for a small number like 0.005), the index becomes <span class="font-semibold">_____</span>.</span>`,
+        blanks: [
+           {
+            id: "blank-3b",
+            options: [
+              { value: "negative", label: "negative", isCorrect: true, feedback: "Correct: right move → smaller index." },
+              { value: "positive", label: "positive", isCorrect: false, feedback: "Opposite direction." },
+              { value: "unstable", label: "unstable", isCorrect: false, feedback: "No." },
+              { value: "infinite", label: "infinite", isCorrect: false, feedback: "No." }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -188,124 +321,34 @@ window.lessonContent = {
     cloze: [
       {
         id: "summary-3",
-        sentence: `<span>To convert an ordinary number to standard form, place the decimal after the first non-zero digit to create a coefficient between <span class="font-semibold">_____</span> and 10. Then count how many places the decimal moved to find the power of 10.</span>`
+        sentence: `<span>To convert an ordinary number to standard form, place the decimal after the first non-zero digit to create a coefficient between <span class="font-semibold">_____</span> and 10. Then count how many places the decimal moved to find the power of 10.</span>`,
+        blanks: [
+           {
+            id: "sum3-blank-1",
+            options: [
+              { value: "1", label: "1", isCorrect: true, feedback: "Correct: 1 ≤ a < 10." },
+              { value: "0", label: "0", isCorrect: false, feedback: "Too small." },
+              { value: "10", label: "10", isCorrect: false, feedback: "Too big." },
+              { value: "100", label: "100", isCorrect: false, feedback: "Too big." }
+            ]
+          }
+        ]
       }
     ]
   },
   step15: {
     title: "Practice question",
     practice: {
-      prompt: `<span>Convert 0.000045 into standard form and explain why the index is negative.</span>`
+      prompt: `<span>Convert 0.000045 into standard form and explain why the index is negative.</span>`,
+       mustHaveKeywords: ["decimal right", "negative index", "standard form"],
+      optionalKeywords: ["4.5 x 10^-5"],
+      modelAnswer: `<span>Move the decimal 5 places to the right to get 4.5. Because we moved right (making the number bigger), we must use a negative index to balance it. So: 4.5 × 10<sup>−5</sup>.</span>`,
+      scaffoldPrompts: [
+        "Where should the decimal go?",
+        "How many places does it move?",
+        "Did you move left or right?"
+      ],
+      hint: "Remember: small number → negative index."
     }
   }
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Retry mechanism to ensure React has rendered the elements
-    const maxRetries = 50;
-    let attempts = 0;
-
-    const interval = setInterval(() => {
-        const topicTitle = document.getElementById('topic-title');
-        
-        if (topicTitle) {
-            clearInterval(interval);
-            updateContent();
-        } else {
-            attempts++;
-            if (attempts >= maxRetries) {
-                clearInterval(interval);
-                console.warn('Could not find elements to update content.');
-            }
-        }
-    }, 100);
-
-    function updateContent() {
-        if (!window.lessonContent) return;
-        const c = window.lessonContent;
-
-        const topicTitle = document.getElementById('topic-title');
-        if (topicTitle) topicTitle.innerText = c.topicTitle;
-
-        const specCode = document.getElementById('spec-code');
-        if (specCode) specCode.innerText = "Spec " + c.specCode;
-
-        const strapline = document.getElementById('strapline');
-        if (strapline) strapline.innerText = c.strapline;
-        
-        const loContainer = document.getElementById('learning-objectives');
-        if (loContainer && c.learningObjectives) {
-            loContainer.innerHTML = ''; 
-            const ul = document.createElement('ul');
-            ul.className = "list-disc pl-5 space-y-2 text-sm text-foreground";
-            
-            c.learningObjectives.forEach(loText => {
-                const li = document.createElement('li');
-                li.innerText = loText;
-                ul.appendChild(li);
-            });
-            loContainer.appendChild(ul);
-        }
-
-        // Steps Loop
-        for (let i = 1; i <= 20; i++) {
-            const stepKey = `step${i}`;
-            if (!c[stepKey]) continue;
-            const data = c[stepKey];
-
-            // Title
-            updateHtml(`step-${i}-title`, data.title);
-
-            // Explanation / Concept
-            updateHtml(`step-${i}-explanation`, data.explanation);
-            
-            // Analogy
-            if (data.analogy) {
-                updateHtml(`step-${i}-analogy-title`, data.analogy.title);
-                updateHtml(`step-${i}-analogy-content`, data.analogy.content);
-            }
-
-            // Worked Example
-            if (data.workedExample) {
-                updateHtml(`step-${i}-example-title`, data.workedExample.title);
-                if (data.workedExample.bullets) {
-                    data.workedExample.bullets.forEach((b, idx) => {
-                        updateHtml(`step-${i}-example-bullet-${idx}`, b);
-                    });
-                }
-            }
-
-            // MCQs
-            if (data.mcqs) {
-                data.mcqs.forEach(mcq => {
-                    updateHtml(`step-${i}-mcq-${mcq.id}-question`, mcq.question);
-                    if (mcq.options) {
-                        mcq.options.forEach(opt => {
-                            updateHtml(`step-${i}-mcq-${mcq.id}-option-${opt.id}`, opt.label);
-                        });
-                    }
-                });
-            }
-
-            // Cloze
-            if (data.cloze) {
-                data.cloze.forEach(line => {
-                    updateHtml(`step-${i}-cloze-${line.id}-sentence`, line.sentence);
-                });
-            }
-
-            // Practice
-            if (data.practice) {
-                updateHtml(`step-${i}-practice-prompt`, data.practice.prompt);
-            }
-        }
-    }
-
-    function updateHtml(id, html) {
-        if (!html) return;
-        const el = document.getElementById(id);
-        if (el) {
-            el.innerHTML = html;
-        }
-    }
-});
