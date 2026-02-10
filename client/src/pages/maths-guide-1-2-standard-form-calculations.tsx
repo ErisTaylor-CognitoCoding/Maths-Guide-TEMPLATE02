@@ -875,6 +875,12 @@ export default function MathsGuideStandardForm() {
   });
 
   React.useEffect(() => {
+    if (appData.topicTitle && appData.topicTitle !== "Loading Lesson...") {
+      document.title = appData.topicTitle;
+    }
+  }, [appData.topicTitle]);
+
+  React.useEffect(() => {
     const loadContent = () => {
       const data = window.lessonContent;
       if (!data) return;
@@ -1151,10 +1157,6 @@ export default function MathsGuideStandardForm() {
   }
 
   const leftSubtitle = appData.strapline;
-
-  React.useEffect(() => {
-    document.title = appData.topicTitle;
-  }, [appData.topicTitle]);
 
   return (
     <div className="min-h-screen bg-background" data-testid="page-maths-guide">
