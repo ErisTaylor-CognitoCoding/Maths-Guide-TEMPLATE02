@@ -853,7 +853,7 @@ function Whiteboard({
   );
 }
 
-export default function MathsGuideStandardForm() {
+export default function MathsGuideStandardForm({ content }: { content?: any }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<Record<string, boolean>>({});
   const [mcqState, setMcqState] = React.useState<McqState>({});
@@ -882,7 +882,7 @@ export default function MathsGuideStandardForm() {
 
   React.useEffect(() => {
     const loadContent = () => {
-      const data = window.lessonContent;
+      const data = content || window.lessonContent;
       if (!data) return;
 
       setAppData({

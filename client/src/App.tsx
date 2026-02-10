@@ -6,12 +6,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import MathsGuideStandardForm from "./pages/maths-guide-1-2-standard-form-calculations";
+import AdminPreview from "./pages/admin-preview";
 
 function Router() {
   return (
     <WouterRouter hook={useHashLocation}>
       <Switch>
         <Route path="/" component={MathsGuideStandardForm} />
+        <Route path="/admin" component={AdminPreview} />
         <Route component={NotFound} />
       </Switch>
     </WouterRouter>
