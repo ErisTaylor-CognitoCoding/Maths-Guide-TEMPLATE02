@@ -42,6 +42,7 @@ When executing this skill, adhere strictly to the following system prompt:
   "topicTitle": "Full Topic Title",
   "strapline": "Short summary",
   "learningObjectives": ["Objective 1", "Objective 2", "Objective 3"],
+  "keyFormulas": ["Formula 1: a = b + c", "Reminder: Don't forget units"],
   "step1": {
     "title": "Concept: Step Title",
     "explanation": "<p class=\"text-sm leading-6 text-muted-foreground\">Explanation text</p>",

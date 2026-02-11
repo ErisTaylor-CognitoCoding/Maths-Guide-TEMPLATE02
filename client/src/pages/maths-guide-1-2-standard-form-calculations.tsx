@@ -871,7 +871,8 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
     specCode: "...",
     topicTitle: "Loading Lesson...",
     strapline: "Please wait while content loads",
-    learningObjectives: [] as string[]
+    learningObjectives: [] as string[],
+    keyFormulas: [] as string[]
   });
 
   React.useEffect(() => {
@@ -890,7 +891,8 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
         specCode: data.specCode || "Spec",
         topicTitle: data.topicTitle || "Topic",
         strapline: data.strapline || "Strapline",
-        learningObjectives: data.learningObjectives || []
+        learningObjectives: data.learningObjectives || [],
+        keyFormulas: data.keyFormulas || []
       });
 
       const loadedSteps: Step[] = [];
@@ -1279,12 +1281,15 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
                     className="mt-2 rounded-2xl border border-border bg-white p-4 text-sm text-muted-foreground"
                     data-testid="panel-quick-notes"
                   >
-                    <ul className="list-disc space-y-1 pl-5">
-                      <li data-testid="text-quick-note-0">Standard form: a × 10<sup>n</sup> with 1 ≤ a &lt; 10</li>
-                      <li data-testid="text-quick-note-1">Multiply: add indices (10<sup>m</sup> × 10<sup>n</sup> = 10<sup>m+n</sup>)</li>
-                      <li data-testid="text-quick-note-2">Divide: subtract indices (10<sup>m</sup> ÷ 10<sup>n</sup> = 10<sup>m−n</sup>)</li>
-                      <li data-testid="text-quick-note-3">Add/subtract: powers must match first</li>
-                    </ul>
+                    {appData.keyFormulas.length > 0 ? (
+                      <ul className="list-disc space-y-1 pl-5">
+                        {appData.keyFormulas.map((note, i) => (
+                           <li key={i} data-testid={`text-quick-note-${i}`}><HtmlContent content={note} /></li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="text-xs italic text-muted-foreground/50">No formulas loaded</div>
+                    )}
                   </div>
                 </CollapsibleContent>
               </Collapsible>
