@@ -43,6 +43,7 @@ When executing this skill, adhere strictly to the following system prompt:
   "strapline": "Short summary",
   "learningObjectives": ["Objective 1", "Objective 2", "Objective 3"],
   "keyFormulas": ["Formula 1: a = b + c", "Reminder: Don't forget units"],
+  "diagramHtml": "<svg>...</svg> (Optional: Custom SVG diagram)",
   "step1": {
     "title": "Concept: Step Title",
     "explanation": "<p class=\"text-sm leading-6 text-muted-foreground\">Explanation text</p>",

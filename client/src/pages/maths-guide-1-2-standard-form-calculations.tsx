@@ -872,7 +872,8 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
     topicTitle: "Loading Lesson...",
     strapline: "Please wait while content loads",
     learningObjectives: [] as string[],
-    keyFormulas: [] as string[]
+    keyFormulas: [] as string[],
+    diagramHtml: null as string | null
   });
 
   React.useEffect(() => {
@@ -892,7 +893,8 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
         topicTitle: data.topicTitle || "Topic",
         strapline: data.strapline || "Strapline",
         learningObjectives: data.learningObjectives || [],
-        keyFormulas: data.keyFormulas || []
+        keyFormulas: data.keyFormulas || [],
+        diagramHtml: data.diagramHtml || null
       });
 
       const loadedSteps: Step[] = [];
@@ -1248,7 +1250,26 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
 
             {diagramStage > 0 ? (
               <div className="flex min-h-0 flex-1 flex-col" data-testid="left-diagram-wrap">
-                <Diagram stage={diagramStage} />
+                {appData.diagramHtml ? (
+                   <div className="h-full w-full">
+                      <div className="mb-2 flex items-center justify-between">
+                        <div>
+                          <div className="text-sm font-semibold">Visual Summary</div>
+                          <div className="text-xs text-muted-foreground">Key concepts</div>
+                        </div>
+                      </div>
+                      <div 
+                        className="cognito-card cognito-noise h-[calc(100%-44px)] rounded-2xl p-4 overflow-hidden flex items-center justify-center bg-white"
+                        dangerouslySetInnerHTML={{ __html: appData.diagramHtml }}
+                      />
+                   </div>
+                ) : appData.topicTitle.toLowerCase().includes("standard form") ? (
+                  <Diagram stage={diagramStage} />
+                ) : (
+                  <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-dashed border-border p-8 text-center text-muted-foreground">
+                    <p className="text-sm">No diagram available for this topic</p>
+                  </div>
+                )}
               </div>
             ) : null}
 
