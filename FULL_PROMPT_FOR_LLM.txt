@@ -27,6 +27,7 @@ STRICT RULES:
     The minimum number of steps you MUST include is 6 before finishing with a full exam-style question
     The maximum number of steps is 18
     You must never show the student an answer to an example or question before they have got it correct
+    Worked examples MUST be interactive: ask the student to input values step-by-step.
 
 Required JSON Structure:
 
@@ -50,8 +51,28 @@ Required JSON Structure:
       "content": "<p class=\"text-sm leading-6 text-muted-foreground\">Real world example</p>"
     },
     "workedExample": {
-      "title": "Worked Example",
-      "bullets": ["<span>Step 1</span>", "<span>Step 2</span>"]
+      "title": "Worked Example: Converting to Standard Form",
+      "problem": "Convert the number <strong>5300</strong> into standard form.",
+      "questions": [
+        {
+          "id": "q1",
+          "prompt": "Identify the first non-zero digit (value of 'a' before decimal adjustment)",
+          "answer": "5",
+          "feedback": "Correct. The first significant figure is 5."
+        },
+        {
+          "id": "q2",
+          "prompt": "Place the decimal after the first digit. What is 'a'?",
+          "answer": "5.3",
+          "feedback": "Correct. 5.3 is between 1 and 10."
+        },
+        {
+          "id": "q3",
+          "prompt": "How many places did the decimal move? (Value of 'n')",
+          "answer": "3",
+          "feedback": "Correct. It moved 3 places to the left."
+        }
+      ]
     }
   },
   "step2": {

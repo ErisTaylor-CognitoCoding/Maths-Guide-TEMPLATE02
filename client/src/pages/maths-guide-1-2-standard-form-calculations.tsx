@@ -26,7 +26,17 @@ type Step = {
   title: string;
   explanation?: React.ReactNode;
   analogy?: { title?: string; content: React.ReactNode };
-  workedExample?: { title?: string; bullets: React.ReactNode[] };
+  workedExample?: {
+    title?: string;
+    bullets?: React.ReactNode[];
+    problem?: React.ReactNode;
+    questions?: {
+      id: string;
+      prompt: React.ReactNode;
+      answer: string;
+      feedback: React.ReactNode;
+    }[];
+  };
   mcqs?: {
     id: string;
     question: React.ReactNode;
@@ -384,6 +394,95 @@ function Diagram({
           </g>
         </svg>
       </div>
+    </div>
+  );
+}
+
+function WorkedExampleInteractive({
+  example,
+  stepId,
+  state,
+  onAnswer
+}: {
+  example: NonNullable<Step["workedExample"]>;
+  stepId: string;
+  state: Record<string, string>;
+  onAnswer: (qId: string, value: string) => void;
+}) {
+  const [inputs, setInputs] = React.useState<Record<string, string>>({});
+  const questions = example.questions || [];
+
+  return (
+    <div className="mt-4 rounded-xl border border-border bg-white p-4" data-testid={`box-example-${stepId}`}>
+      <div className="text-xs font-semibold tracking-[0.14em] text-muted-foreground" data-testid={`text-example-title-${stepId}`}>
+        {example.title ?? "WORKED EXAMPLE"}
+      </div>
+
+      {example.problem && (
+        <div className="mt-3 mb-4 text-sm font-medium">
+          {typeof example.problem === 'string' ? <HtmlContent content={example.problem} /> : example.problem}
+        </div>
+      )}
+
+      {questions.length > 0 ? (
+        <div className="space-y-4">
+          {questions.map((q, idx) => {
+             const isCorrect = state[q.id] === "correct";
+             // If previous question not correct, lock this one (unless it's the first)
+             const isLocked = idx > 0 && state[questions[idx-1].id] !== "correct";
+
+             return (
+               <div key={q.id} className={cn("transition-opacity", isLocked && "opacity-50 grayscale")}>
+                 <div className="text-sm mb-1.5">
+                   <span className="font-semibold text-muted-foreground mr-2">Step {idx + 1}:</span>
+                   {typeof q.prompt === 'string' ? <HtmlContent content={q.prompt} /> : q.prompt}
+                 </div>
+                 <div className="flex gap-2">
+                   <input
+                     type="text"
+                     disabled={isLocked || isCorrect}
+                     value={inputs[q.id] || ""}
+                     onChange={(e) => setInputs(p => ({ ...p, [q.id]: e.target.value }))}
+                     placeholder="?"
+                     className="flex-1 rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                   />
+                   <Button
+                     size="sm"
+                     disabled={isLocked || isCorrect || !inputs[q.id]}
+                     onClick={() => {
+                        const val = inputs[q.id] || "";
+                        if (normalize(val) === normalize(q.answer)) {
+                          onAnswer(q.id, "correct");
+                        } else {
+                          // Simple shake or error state could be added here
+                          // For now we just don't advance
+                          alert("Try again!"); 
+                        }
+                     }}
+                     variant={isCorrect ? "outline" : "default"}
+                     className={cn(isCorrect && "border-green-500 text-green-600 bg-green-50")}
+                   >
+                     {isCorrect ? <CheckCircle2 className="w-4 h-4" /> : "Check"}
+                   </Button>
+                 </div>
+                 {isCorrect && q.feedback && (
+                   <div className="mt-2 text-xs text-green-700 bg-green-50 p-2 rounded">
+                     {typeof q.feedback === 'string' ? <HtmlContent content={q.feedback} /> : q.feedback}
+                   </div>
+                 )}
+               </div>
+             );
+          })}
+        </div>
+      ) : (
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+          {(example.bullets || []).map((b, i) => (
+            <li key={i} data-testid={`text-example-bullet-${stepId}-${i}`}>
+              {typeof b === 'string' ? <HtmlContent content={b} /> : b}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -856,6 +955,7 @@ function Whiteboard({
 export default function MathsGuideStandardForm({ content }: { content?: any } & Partial<any>) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<Record<string, boolean>>({});
+  const [weState, setWeState] = React.useState<Record<string, Record<string, string>>>({});
   const [mcqState, setMcqState] = React.useState<McqState>({});
   const [clozeState, setClozeState] = React.useState<ClozeState>({});
   const [attempts, setAttempts] = React.useState<AttemptState>({ practiceAttempts: {}, practiceText: {} });
@@ -934,7 +1034,14 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
           } : undefined,
           workedExample: stepData.workedExample ? {
             title: stepData.workedExample.title,
-            bullets: (stepData.workedExample.bullets || []).map((b: string) => <HtmlContent content={b} />)
+            bullets: (stepData.workedExample.bullets || []).map((b: string) => <HtmlContent content={b} />),
+            problem: stepData.workedExample.problem ? <HtmlContent content={stepData.workedExample.problem} /> : undefined,
+            questions: stepData.workedExample.questions?.map((q: any) => ({
+              id: q.id,
+              prompt: <HtmlContent content={q.prompt} />,
+              answer: q.answer,
+              feedback: <HtmlContent content={q.feedback} />
+            }))
           } : undefined,
           mcqs: stepData.mcqs?.map((m: any) => ({
             id: m.id,
@@ -1034,7 +1141,15 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
     const step = currentStep;
     if (completed[step.id]) return true;
 
-    if (step.type === "concept") return true;
+    if (step.type === "concept") {
+       // Check if interactive worked example is complete
+       if (step.workedExample?.questions?.length) {
+         const qs = step.workedExample.questions;
+         const state = weState[step.id] || {};
+         return qs.every(q => state[q.id] === "correct");
+       }
+       return true;
+    }
 
     if (step.type === "mcq") {
       const mcqs = step.mcqs ?? [];
@@ -1422,16 +1537,15 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
                         ) : null}
 
                         {s.workedExample ? (
-                          <div className="mt-4 rounded-xl border border-border bg-white p-4" data-testid={`box-example-${s.id}`}>
-                            <div className="text-xs font-semibold tracking-[0.14em] text-muted-foreground" data-testid={`text-example-title-${s.id}`} id={`step-${idx + 1}-example-title`}>
-                              {s.workedExample.title ?? "WORKED EXAMPLE"}
-                            </div>
-                            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-                              {s.workedExample.bullets.map((b, i) => (
-                                <li key={i} data-testid={`text-example-bullet-${s.id}-${i}`} id={`step-${idx + 1}-example-bullet-${i}`}> {b}</li>
-                              ))}
-                            </ul>
-                          </div>
+                          <WorkedExampleInteractive
+                             example={s.workedExample}
+                             stepId={s.id}
+                             state={weState[s.id] || {}}
+                             onAnswer={(qId, val) => setWeState(p => ({
+                               ...p,
+                               [s.id]: { ...(p[s.id] || {}), [qId]: val }
+                             }))}
+                          />
                         ) : null}
                       </div>
                     ) : null}
