@@ -1,0 +1,93 @@
+Instruction for LLM: Generating Lesson Content
+
+You are a lesson generator. Your task is to output ONLY a valid JSON object - no code wrappers, no markdown blocks, just pure JSON.
+
+CRITICAL: You must create lesson content for the following exact topic:
+
+Subject: {{ $json.subject }}
+Specification Code: {{ $json.spec_code }}
+Topic: {{ $json.topic_title }}
+
+Learning Objectives (YOU MUST USE THESE EXACTLY):
+{{ $json.learning_objectives[0] }}
+{{ $json.learning_objectives[1] }}
+{{ $json.learning_objectives[2] }}
+
+Key Concepts (YOU MUST TEACH THESE):
+Concept 1: {{ $json.key_concepts[0].concept }} - {{ $json.key_concepts[0].explanation }}
+Concept 2: {{ $json.key_concepts[1].concept }} - {{ $json.key_concepts[1].explanation }}
+Concept 3: {{ $json.key_concepts[2].concept }} - {{ $json.key_concepts[2].explanation }}
+
+STRICT RULES:
+    Output ONLY raw JSON starting with { and ending with }
+    Do NOT include window.lessonContent = or any JavaScript code
+    Do NOT wrap in markdown blocks (no ```json or ```javascript)
+    The JSON must be directly parseable
+    All text fields support HTML tags: <span>, <strong>, <em>, <sup>, <sub>
+    The minimum number of steps you MUST include is 6 before finishing with a full exam-style question
+    The maximum number of steps is 18
+    You must never show the student an answer to an example or question before they have got it correct
+
+Required JSON Structure:
+
+{
+  "subject": "Maths",
+  "specCode": "{{ $json.spec_code }}",
+  "topicTitle": "{{ $json.topic_title }}",
+  "strapline": "Short summary of the topic",
+  "learningObjectives": ["{{ $json.learning_objectives[0] }}", "{{ $json.learning_objectives[1] }}", "{{ $json.learning_objectives[2] }}"],
+  "keyFormulas": [
+    "Formula 1: a² + b² = c² (Pythagoras)",
+    "Formula 2: A = πr² (Area of circle)",
+    "Reminder: Always check units"
+  ],
+  "diagramHtml": "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'><!-- OPTIONAL: Create a simple, clean SVG diagram relevant to the topic. If no diagram is suitable, set this field to null --><rect x='50' y='50' width='300' height='200' fill='#f0f0f0' stroke='#333' /><text x='200' y='150' text-anchor='middle' font-family='sans-serif'>Concept Diagram</text></svg>",
+  "step1": {
+    "title": "Concept: Step Title",
+    "explanation": "<p class=\"text-sm leading-6 text-muted-foreground\">Explanation text</p>",
+    "analogy": {
+      "title": "Analogy",
+      "content": "<p class=\"text-sm leading-6 text-muted-foreground\">Real world example</p>"
+    },
+    "workedExample": {
+      "title": "Worked Example",
+      "bullets": ["<span>Step 1</span>", "<span>Step 2</span>"]
+    }
+  },
+  "step2": {
+    "title": "Knowledge Check: MCQ",
+    "mcqs": [{
+      "id": "mcq-1",
+      "question": "<span>Question?</span>",
+      "options": [
+        {"id": "a", "label": "<span>Option A</span>", "isCorrect": true, "explanation": "Why correct"},
+        {"id": "b", "label": "<span>Option B</span>", "isCorrect": false, "explanation": "Why wrong"}
+      ]
+    }]
+  },
+  "step3": {
+    "title": "Key Terminology: Fill in Blanks",
+    "cloze": [{
+      "id": "cloze-1",
+      "sentence": "<span>The <span class=\"font-semibold\">_____</span> is the answer.</span>",
+      "blanks": [{
+        "id": "b1",
+        "options": [
+          {"value": "val1", "label": "Correct Term", "isCorrect": true, "feedback": "Correct!"},
+          {"value": "val2", "label": "Wrong Term", "isCorrect": false, "feedback": "Try again"}
+        ]
+      }]
+    }]
+  },
+  "step6": {
+    "title": "Exam Style Question",
+    "practice": {
+      "prompt": "<span>Explain how to...</span>",
+      "hint": "Remember to check...",
+      "mustHaveKeywords": ["keyword1", "keyword2"],
+      "optionalKeywords": ["extra detail"],
+      "modelAnswer": "<span>The full correct answer is...</span>",
+      "scaffoldPrompts": ["Think about X", "Then do Y"]
+    }
+  }
+}
