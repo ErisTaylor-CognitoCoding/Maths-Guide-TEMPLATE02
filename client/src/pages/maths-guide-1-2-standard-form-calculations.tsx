@@ -401,11 +401,13 @@ function Diagram({
 function WorkedExampleInteractive({
   example,
   stepId,
+  locked,
   state,
   onAnswer
 }: {
   example: NonNullable<Step["workedExample"]>;
   stepId: string;
+  locked?: boolean;
   state: Record<string, string>;
   onAnswer: (qId: string, value: string) => void;
 }) {
@@ -428,8 +430,9 @@ function WorkedExampleInteractive({
         <div className="space-y-4">
           {questions.map((q, idx) => {
              const isCorrect = state[q.id] === "correct";
-             // If previous question not correct, lock this one (unless it's the first)
-             const isLocked = idx > 0 && state[questions[idx-1].id] !== "correct";
+             // If the whole step is locked, all questions are locked.
+             // Otherwise, if previous question not correct, lock this one (unless it's the first)
+             const isLocked = locked || (idx > 0 && state[questions[idx-1].id] !== "correct");
 
              return (
                <div key={q.id} className={cn("transition-opacity", isLocked && "opacity-50 grayscale")}>
@@ -1540,6 +1543,7 @@ export default function MathsGuideStandardForm({ content }: { content?: any } & 
                           <WorkedExampleInteractive
                              example={s.workedExample}
                              stepId={s.id}
+                             locked={locked}
                              state={weState[s.id] || {}}
                              onAnswer={(qId, val) => setWeState(p => ({
                                ...p,
